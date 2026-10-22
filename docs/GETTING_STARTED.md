@@ -15,6 +15,7 @@
 npm install
 npm run install:all
 cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env
 npm run dev
 ```
 
@@ -38,7 +39,7 @@ open iosApp/iosApp.xcodeproj          # puis Run dans Xcode
 Après avoir créé ton repo depuis le template :
 
 1. **Nom global** : remplace `Ember` / `ember` dans `README.md`, `package.json` (racine, `apps/api`, `apps/web`).
-2. **Web** : `<title>` dans `apps/web/src/index.html`, marque dans `layout/shell/shell.ts`.
+2. **Web** : `title` dans `apps/web/src/routes/__root.tsx`, marque dans `src/components/header.tsx`, couleurs dans `src/global.css`.
 3. **API** : titre Swagger dans `apps/api/src/main.ts`.
 4. **Mobile**
    - `rootProject.name` dans `apps/mobile/settings.gradle.kts`
@@ -47,4 +48,5 @@ Après avoir créé ton repo depuis le template :
    - `BUNDLE_ID` / `APP_NAME` / `TEAM_ID` dans `iosApp/Configuration/Config.xcconfig`
    - `app_name` dans `androidApp/src/main/res/values/strings.xml`
 5. **Licence** : mets à jour le copyright dans `LICENSE`.
-6. Supprime la feature d'exemple `items` quand tu as créé la tienne (voir les guides).
+6. **Base de données** : garde SQLite ou choisis ton provider ([DATABASE.md](DATABASE.md)).
+7. Supprime la feature d'exemple `item` / `items` quand tu as créé la tienne (voir les guides).

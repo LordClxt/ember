@@ -1,4 +1,4 @@
-import type { PaginationMeta } from '../interfaces/paginated.interface.js';
+import type { PaginationMeta } from '../types/paginated.type.js';
 
 /**
  * Generic repository contract. Services depend on this abstraction,

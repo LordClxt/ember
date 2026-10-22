@@ -4,9 +4,10 @@
 
 ```
 ┌────────────────┐        ┌───────────────────────┐
-│  Web (Angular) │──HTTP──▶                       │
-└────────────────┘        │   API (NestJS)        │
-┌────────────────┐        │   /api/v1/*           │──▶ Repository (in-memory → DB)
+│  Web (TanStack │──HTTP──▶                       │
+│  Start, SSR)   │        │   API (NestJS)        │
+└────────────────┘        │   /api/v1/*           │──▶ Repository ──▶ Drizzle
+┌────────────────┐        │                       │     (SQLite · Postgres · MySQL)
 │ Mobile (KMP)   │──HTTP──▶   /api/health         │
 │ Android · iOS  │        └───────────────────────┘
 └────────────────┘
@@ -37,31 +38,32 @@ Préfixe : `/api`, versionnement par URI (`/api/v1`). La documentation OpenAPI e
 { "statusCode": 400, "message": ["name should not be empty"], "path": "/api/v1/items", "timestamp": "…" }
 ```
 
-Dates en ISO 8601 (UTC). Identifiants en UUID v4.
+Dates en ISO 8601 (UTC). Identifiants en UUID v7 (triables par date de création).
 
 ## Patterns par couche
 
-| Couche | API (NestJS) | Web (Angular) | Mobile (KMP) |
+| Couche | API (NestJS) | Web (TanStack Start) | Mobile (KMP) |
 |--------|--------------|---------------|--------------|
-| Transport | Controller | `ApiService` + `*.api.ts` | `KtorItemsApi` |
-| Validation | DTO + `ValidationPipe` | Reactive Forms | — |
-| Orchestration | Service | Store (signals) | ViewModel (`StateFlow`) |
-| Accès données | Repository (token d'injection) | — | Repository (interface domaine) |
-| Erreurs | `AllExceptionsFilter` | `errorInterceptor` + `NotificationService` | `safeApiCall` → `AppResult` |
-| DI | Modules Nest | `inject()` / providers de route | Koin |
+| Transport | Controller | `lib/api-client.ts` + `lib/<domaine>.ts` | `KtorItemsApi` |
+| Validation | DTO + `ValidationPipe` | `validateSearch` des routes, formulaires | — |
+| Orchestration | Service | Loader de route + TanStack Query (`queryOptions`, hooks de mutation) | ViewModel (`StateFlow`) |
+| Accès données | Repository (token) → Drizzle | — (l'API possède la base) | Repository (interface domaine) |
+| Erreurs | `AllExceptionsFilter` | `ApiError` + `defaultErrorComponent` / `notFound()` | `safeApiCall` → `AppResult` |
+| DI | Modules Nest | Contexte du router (`queryClient`) | Koin |
 
 ### Principes
 
-- **Feature-first** : tout ce qui concerne une feature vit dans son dossier (`modules/items`, `features/items`).
+- **Structure par domaine** : `modules/item/` côté API, `components/items/` + `lib/items.ts` + `routes/items/` côté web, `features/items/` côté mobile.
 - **Dépendre d'abstractions** : les services/ViewModels consomment des interfaces (repository), jamais l'implémentation concrète.
 - **Couches fines** : controllers / composants / écrans ne contiennent pas de logique ; ils délèguent.
 - **Erreurs centralisées** : un seul endroit par app pour transformer une erreur en message utilisateur.
 - **Pas de logique métier dans le template** : `items` n'est qu'un exemple à remplacer.
 
-## Ajouter une base de données (API)
+## Base de données
 
-Le module `items` utilise `InMemoryItemsRepository`. Pour persister :
+Drizzle ORM, provider configurable (`DB_PROVIDER`), **SQLite par défaut**. Voir [DATABASE.md](DATABASE.md).
 
-1. Ajoute ton ORM (Prisma, TypeORM, Drizzle…).
-2. Crée `PrismaItemsRepository implements ItemsRepository`.
-3. Remplace `useClass` dans `items.module.ts`. Le service et le controller ne changent pas.
+## Références d'organisation
+
+- API : [Clean Folder & File Naming Guide for NestJS](https://medium.com/@nairi.abgaryan/stop-the-chaos-clean-folder-file-naming-guide-for-backend-nest-js-and-node-331fdc6400cb), détaillé dans [API.md](API.md)
+- Web : [TanStack Start project structure](https://royportas.com/posts/tanstack-start-project-structure), détaillé dans [WEB.md](WEB.md)
