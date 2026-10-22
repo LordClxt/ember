@@ -2,7 +2,8 @@ package com.ember.core.result
 
 /** Errors surfaced by the data layer, independent of the networking library. */
 sealed interface AppError {
-    data class Http(val code: Int, val message: String?) : AppError
+    /** [message] comes from the API error envelope when available. */
+    data class Http(val code: Int, val message: String) : AppError
     data class Network(val cause: Throwable) : AppError
     data class Unknown(val cause: Throwable) : AppError
 }
@@ -19,7 +20,7 @@ inline fun <T, R> AppResult<T>.map(transform: (T) -> R): AppResult<R> = when (th
 }
 
 fun AppError.toUserMessage(): String = when (this) {
-    is AppError.Http -> message ?: "Server error ($code)"
+    is AppError.Http -> message.ifBlank { "Server error ($code)" }
     is AppError.Network -> "Network unavailable. Check your connection."
     is AppError.Unknown -> cause.message ?: "Unexpected error"
 }

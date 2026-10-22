@@ -5,6 +5,7 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter.js';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js';
 import { configuration } from './config/configuration.js';
 import { validateEnv } from './config/env.validation.js';
+import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { ItemsModule } from './modules/items/items.module.js';
 
@@ -15,6 +16,7 @@ import { ItemsModule } from './modules/items/items.module.js';
       load: [configuration],
       validate: validateEnv,
     }),
+    DatabaseModule,
     HealthModule,
     ItemsModule,
   ],
