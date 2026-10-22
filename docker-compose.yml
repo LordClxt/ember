@@ -28,6 +28,17 @@ services:
       timeout: 3s
       retries: 3
 
+  web:
+    build:
+      context: ./apps/web
+      args:
+        # Inlined in the browser bundle: must be reachable from the user's browser.
+        VITE_API_URL: http://localhost:3000/api/v1
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api
+
   postgres:
     image: postgres:17-alpine
     profiles: [postgres]

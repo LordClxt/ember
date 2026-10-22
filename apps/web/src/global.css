@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ember-50: #fff4ef;
+  --color-ember-500: #e4572e;
+  --color-ember-600: #c9441d;
+  --color-ink: #29335c;
+}
+
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100;
+    font-family:
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+  }
+}

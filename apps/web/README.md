@@ -1,8 +1,9 @@
 # Ember Web
 
-Angular 22. Voir [docs/WEB.md](../../docs/WEB.md).
+TanStack Start (React, SSR). Voir [docs/WEB.md](../../docs/WEB.md).
 
 ```bash
 npm install
-npm start
+cp .env.example .env
+npm run dev   # http://localhost:3001
 ```
