@@ -1,22 +1,30 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { DATABASE } from '../../database/database.constants.js';
+import type { DatabaseConnection } from '../../database/database.types.js';
+import { createSqliteTestDatabase } from '../../../test/utils/test-database.js';
 import { ItemsService } from './items.service.js';
-import { InMemoryItemsRepository } from './repositories/in-memory-items.repository.js';
+import { DrizzleItemsRepository } from './repositories/drizzle-items.repository.js';
 import { ITEMS_REPOSITORY } from './repositories/items.repository.js';
 
 describe('ItemsService', () => {
   let service: ItemsService;
+  let connection: DatabaseConnection;
 
   beforeEach(async () => {
+    connection = await createSqliteTestDatabase();
     const moduleRef = await Test.createTestingModule({
       providers: [
         ItemsService,
-        { provide: ITEMS_REPOSITORY, useClass: InMemoryItemsRepository },
+        { provide: DATABASE, useValue: connection },
+        { provide: ITEMS_REPOSITORY, useClass: DrizzleItemsRepository },
       ],
     }).compile();
 
     service = moduleRef.get(ItemsService);
   });
+
+  afterEach(() => connection.close());
 
   it('creates and lists items', async () => {
     const created = await service.create({ name: 'Ember' });
@@ -37,11 +45,11 @@ describe('ItemsService', () => {
   });
 
   it('throws when the item does not exist', async () => {
-    await expect(service.findOne('missing')).rejects.toBeInstanceOf(
+    const id = '00000000-0000-4000-8000-000000000000';
+    await expect(service.findOne(id)).rejects.toBeInstanceOf(NotFoundException);
+    await expect(service.update(id, { name: 'x' })).rejects.toBeInstanceOf(
       NotFoundException,
     );
-    await expect(service.remove('missing')).rejects.toBeInstanceOf(
-      NotFoundException,
-    );
+    await expect(service.remove(id)).rejects.toBeInstanceOf(NotFoundException);
   });
 });

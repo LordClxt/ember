@@ -22,3 +22,8 @@ coverage/
 # Logs
 *.log
 *.tsbuildinfo
+
+# SQLite databases
+data/
+*.db
+*.db-journal

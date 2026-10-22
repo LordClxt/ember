@@ -14,8 +14,8 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-val coreModule = module {
-    single { AppConfig() }
+fun coreModule(config: AppConfig) = module {
+    single { config }
     single { createHttpClient(get()) }
 }
 
@@ -25,11 +25,11 @@ val itemsModule = module {
     viewModelOf(::ItemsViewModel)
 }
 
-val appModules = listOf(coreModule, itemsModule)
+val featureModules = listOf(itemsModule)
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
+fun initKoin(config: AppConfig = AppConfig(), appDeclaration: KoinAppDeclaration = {}) {
     startKoin {
         appDeclaration()
-        modules(appModules)
+        modules(listOf(coreModule(config)) + featureModules)
     }
 }

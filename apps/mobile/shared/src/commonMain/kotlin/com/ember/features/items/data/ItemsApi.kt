@@ -10,7 +10,7 @@ import io.ktor.client.request.setBody
 
 /** Remote data source: thin HTTP mapping of the NestJS `/items` endpoints. */
 interface ItemsApi {
-    suspend fun list(page: Int = 1, limit: Int = 50): PaginatedDto<ItemDto>
+    suspend fun list(page: Int, limit: Int): PaginatedDto<ItemDto>
     suspend fun create(body: CreateItemDto): ItemDto
     suspend fun delete(id: String)
 }

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import type { BaseEntity } from '../../../common/repositories/in-memory.repository.js';
+import type { BaseEntity } from '../../../common/interfaces/base-entity.interface.js';
 
 export class Item implements BaseEntity {
   @ApiProperty({ format: 'uuid' })

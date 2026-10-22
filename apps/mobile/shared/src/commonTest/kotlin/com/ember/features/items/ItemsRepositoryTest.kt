@@ -24,31 +24,56 @@ class ItemsRepositoryTest {
         ItemsRepositoryImpl(KtorItemsApi(createHttpClient(config, engine)))
 
     @Test
-    fun getItems_mapsDtosToDomain() = runTest {
-        val engine = MockEngine {
+    fun getItems_mapsPageToDomain() = runTest {
+        val engine = MockEngine { request ->
+            assertEquals("2", request.url.parameters["page"])
+            assertEquals("20", request.url.parameters["limit"])
             respond(
                 content = """
                     {"data":[{"id":"1","name":"First","description":null,
                     "createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"}],
-                    "meta":{"page":1,"limit":50,"total":1}}
+                    "meta":{"page":2,"limit":20,"total":21}}
                 """.trimIndent(),
+                headers = jsonHeaders,
+            )
+        }
+
+        val result = repository(engine).getItems(page = 2)
+
+        assertIs<AppResult.Success<*>>(result)
+        val page = (result as AppResult.Success).data
+        assertEquals("First", page.items.single().name)
+        assertEquals(2, page.page)
+        assertEquals(21, page.total)
+    }
+
+    @Test
+    fun getItems_mapsHttpErrorsWithApiMessage() = runTest {
+        val engine = MockEngine {
+            respond(
+                content = """{"statusCode":400,"message":["page must not be less than 1","limit must be an integer"],"path":"/api/v1/items","timestamp":"2026-01-01T00:00:00.000Z"}""",
+                status = HttpStatusCode.BadRequest,
                 headers = jsonHeaders,
             )
         }
 
         val result = repository(engine).getItems()
 
-        assertIs<AppResult.Success<*>>(result)
-        assertEquals("First", (result as AppResult.Success).data.single().name)
+        assertIs<AppResult.Failure>(result)
+        val error = assertIs<AppError.Http>(result.error)
+        assertEquals(400, error.code)
+        assertEquals("page must not be less than 1, limit must be an integer", error.message)
     }
 
     @Test
-    fun getItems_mapsHttpErrors() = runTest {
+    fun getItems_fallsBackToStatusDescription() = runTest {
         val engine = MockEngine { respond("", HttpStatusCode.InternalServerError) }
 
         val result = repository(engine).getItems()
 
         assertIs<AppResult.Failure>(result)
-        assertEquals(500, (result.error as AppError.Http).code)
+        val error = assertIs<AppError.Http>(result.error)
+        assertEquals(500, error.code)
+        assertEquals("Internal Server Error", error.message)
     }
 }

@@ -1,14 +1,59 @@
+# Default: API on SQLite, persisted in the `api-data` volume.
+#   docker compose up --build
+# Postgres instead:
+#   DB_PROVIDER=postgres DATABASE_URL=postgres://ember:ember@postgres:5432/ember \
+#     docker compose --profile postgres up --build
+# MySQL instead:
+#   DB_PROVIDER=mysql DATABASE_URL=mysql://ember:ember@mysql:3306/ember \
+#     docker compose --profile mysql up --build
 services:
   api:
     build: ./apps/api
+    # Retries until the optional postgres/mysql service accepts connections.
+    restart: on-failure
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
       PORT: 3000
-      CORS_ORIGINS: http://localhost:4200
+      CORS_ORIGINS: http://localhost:3001
+      DB_PROVIDER: ${DB_PROVIDER:-sqlite}
+      DATABASE_URL: ${DATABASE_URL:-file:./data/ember.db}
+      DB_AUTO_MIGRATE: "true"
+    volumes:
+      - api-data:/app/data
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
       interval: 10s
       timeout: 3s
       retries: 3
+
+  postgres:
+    image: postgres:17-alpine
+    profiles: [postgres]
+    environment:
+      POSTGRES_USER: ember
+      POSTGRES_PASSWORD: ember
+      POSTGRES_DB: ember
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  mysql:
+    image: mysql:8.4
+    profiles: [mysql]
+    environment:
+      MYSQL_USER: ember
+      MYSQL_PASSWORD: ember
+      MYSQL_DATABASE: ember
+      MYSQL_ROOT_PASSWORD: ember
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  api-data:
+  postgres-data:
+  mysql-data:
