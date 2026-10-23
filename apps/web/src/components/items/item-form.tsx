@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ITEM_NAME_MAX_LENGTH } from '@ember/contracts'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { FormEvent } from 'react'
@@ -29,7 +30,7 @@ export function ItemForm({ onSubmit, pending = false }: ItemFormProps) {
         onChange={(event) => setName(event.target.value)}
         placeholder="New item name"
         aria-label="Item name"
-        maxLength={120}
+        maxLength={ITEM_NAME_MAX_LENGTH}
       />
       <Button type="submit" disabled={pending || !name.trim()}>
         Add

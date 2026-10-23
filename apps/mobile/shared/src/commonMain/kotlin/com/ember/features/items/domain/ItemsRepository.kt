@@ -10,6 +10,7 @@ interface ItemsRepository {
     suspend fun deleteItem(id: String): AppResult<Unit>
 
     companion object {
+        /** Mirrors `PAGINATION.DEFAULT_LIMIT` in `packages/contracts`. */
         const val PAGE_SIZE = 20
     }
 }

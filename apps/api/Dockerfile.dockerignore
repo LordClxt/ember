@@ -1,10 +1,12 @@
-# Build context is the repo root (see docker-compose.yml); only apps/api and
-# packages/contracts are needed.
+# Build context is the repo root (Bun workspace); only what the API image needs.
 **
+!package.json
+!bun.lock
 !apps/api/**
+!apps/web/package.json
 !packages/contracts/**
 **/node_modules
 **/.env
-apps/api/dist
+**/dist
 apps/api/coverage
 apps/api/data

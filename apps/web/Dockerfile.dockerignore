@@ -1,0 +1,12 @@
+# Build context is the repo root (Bun workspace); only what the web image needs.
+**
+!package.json
+!bun.lock
+!apps/web/**
+!apps/api/package.json
+!packages/contracts/**
+**/node_modules
+**/.env
+**/dist
+apps/web/.output
+apps/web/.tanstack

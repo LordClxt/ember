@@ -29,7 +29,7 @@ Details: [API.md](API.md#naming-conventions), [WEB.md](WEB.md#routing-rules).
 ## Code
 
 - TypeScript `strict`. No `any` unless justified.
-- Types exchanged over HTTP live in `packages/contracts` and are imported with `import type` (see [ARCHITECTURE.md](ARCHITECTURE.md#shared-types-packagescontracts)).
+- Everything the API and the web app share (HTTP types, limits, defaults, enums) lives in `packages/contracts`; never hard-code it in an app (see [ARCHITECTURE.md](ARCHITECTURE.md#shared-contract-packagescontracts)).
 - Web: React function components, data through `queryOptions` + route loaders, never a direct `fetch` in a component.
 - `routeTree.gen.ts` is generated: never edit it.
 - NestJS: one module per feature, validated DTOs, no logic in controllers.

@@ -13,7 +13,7 @@
 └────────────────┘
 ```
 
-The three apps are **independent** (each has its own dependencies and build) but share a single **API contract**. Its types are written once in `packages/contracts` (`@ember/contracts`) and imported by the API and the web app; the mobile app (Kotlin) mirrors them in its `*Dto.kt` files.
+The API and the web app form a **Bun workspace** with `packages/contracts`; the mobile app builds on its own with Gradle. All three share a single **API contract**: its types and rules (limits, defaults) are written once in `packages/contracts` (`@ember/contracts`) and imported by the API and the web app; the mobile app (Kotlin) mirrors them in its `*Dto.kt` files.
 
 ## API contract
 
@@ -40,25 +40,25 @@ Prefix: `/api`, URI versioning (`/api/v1`). The OpenAPI documentation is generat
 
 Dates are ISO 8601 (UTC). Ids are UUID v7 (sortable by creation time).
 
-### Shared types (`packages/contracts`)
+### Shared contract (`packages/contracts`)
 
 ```
 packages/contracts/src/
-├── index.d.ts                  # re-exports everything
+├── index.ts                    # re-exports everything
 ├── common/
-│   ├── api-error.type.d.ts     # ApiErrorBody
-│   └── paginated.type.d.ts     # PaginationQuery, PaginationMeta, Paginated<T>
+│   ├── api-error.contract.ts   # ApiErrorBody
+│   └── pagination.contract.ts  # PAGINATION, PaginationQuery, PaginationMeta, Paginated<T>
 └── item/
-    └── item.type.d.ts          # Item, CreateItemInput, UpdateItemInput
+    └── item.contract.ts        # ITEM_NAME_MAX_LENGTH, ITEM_DESCRIPTION_MAX_LENGTH, Item, CreateItemInput, UpdateItemInput
 ```
 
 | Side | Usage |
 |------|-------|
-| API | `CreateItemDto implements CreateItemInput`, `PaginationQueryDto implements PaginationQuery`, error body typed as `ApiErrorBody`, entity checked against `Item` at compile time (`SerializedAs`) |
-| Web | `lib/items.ts`, `lib/api-client.ts`, components and hooks import the types |
-| Mobile | manual mirror in `ItemDto.kt` |
+| API | class-validator DTOs `implements` the types and take their limits from the constants (`@MaxLength(ITEM_NAME_MAX_LENGTH)`, `@Max(PAGINATION.MAX_LIMIT)`); Swagger and Drizzle column lengths use the same constants; error body typed as `ApiErrorBody`; entity checked against `Item` at compile time (`SerializedAs`) |
+| Web | `lib/`, components and hooks import the types; the form uses `ITEM_NAME_MAX_LENGTH`, the client and routes use `PAGINATION` |
+| Mobile | manual mirror in `ItemDto.kt` and `ItemsRepository.PAGE_SIZE` |
 
-The files are `.d.ts` (types only, erased at compile time) resolved through the `@ember/contracts` alias in both `tsconfig.json` files: no extra build or install. Details: [packages/contracts/README.md](../packages/contracts/README.md).
+`@ember/contracts` is a Bun workspace package written in plain TypeScript (no dependencies), compiled to `dist/` by `tsc`. The root `postinstall` builds it and every api/web script rebuilds it first. Details: [packages/contracts/README.md](../packages/contracts/README.md).
 
 ## Patterns per layer
 

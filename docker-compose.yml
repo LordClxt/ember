@@ -9,7 +9,7 @@
 services:
   api:
     build:
-      # Repo root, so the image can see packages/contracts.
+      # Repo root: the API depends on packages/contracts (Bun workspace).
       context: .
       dockerfile: apps/api/Dockerfile
     # Retries until the optional postgres/mysql service accepts connections.
@@ -33,7 +33,9 @@ services:
 
   web:
     build:
-      context: ./apps/web
+      # Repo root: the web app depends on packages/contracts (Bun workspace).
+      context: .
+      dockerfile: apps/web/Dockerfile
       args:
         # Inlined in the browser bundle: must be reachable from the user's browser.
         VITE_API_URL: http://localhost:3000/api/v1

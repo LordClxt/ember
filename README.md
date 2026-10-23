@@ -26,8 +26,7 @@ Then follow the [renaming checklist](docs/GETTING_STARTED.md#rename-the-project)
 Prerequisites: Node 24+, Bun 1.4+, JDK 21, Android Studio (Android), Xcode 16+ (iOS). No database to install: SQLite is used by default.
 
 ```bash
-bun install            # root tooling (concurrently, Husky)
-bun run install:all    # api + web dependencies
+bun install            # whole Bun workspace (api, web, contracts) + Git hooks
 bun run dev            # API on :3000 + web on :3001
 ```
 
@@ -60,7 +59,7 @@ ember/
 │   ├── web/       # TanStack Start: SSR, consumes the API
 │   └── mobile/    # KMP: shared (logic + Compose UI), androidApp, iosApp
 ├── packages/
-│   └── contracts/ # API types shared by api and web (@ember/contracts)
+│   └── contracts/ # API constants and types shared by api and web (@ember/contracts)
 ├── docs/          # Architecture, conventions, per-app guides
 ├── .github/       # CI, issue / PR templates
 └── docker-compose.yml

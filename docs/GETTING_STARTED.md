@@ -13,8 +13,7 @@
 ## Installation
 
 ```bash
-bun install
-bun run install:all
+bun install   # whole workspace; also builds @ember/contracts
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env
 bun run dev
@@ -48,7 +47,7 @@ After creating your repository from the template:
    - Kotlin package `com.ember` → rename the `com/ember` folders (Refactor → Rename in Android Studio)
    - `BUNDLE_ID` / `APP_NAME` / `TEAM_ID` in `iosApp/Configuration/Config.xcconfig`
    - `app_name` in `androidApp/src/main/res/values/strings.xml`
-5. **Contracts**: `@ember/contracts` in `packages/contracts/package.json` and the path aliases of `apps/api/tsconfig.json` / `apps/web/tsconfig.json`.
+5. **Contracts**: package name `@ember/contracts` in `packages/contracts/package.json`, the `@ember/contracts` dependency of `apps/api` / `apps/web`, and the imports.
 6. **License**: update the copyright in `LICENSE`.
 7. **Database**: keep SQLite or pick your provider ([DATABASE.md](DATABASE.md)).
 8. Delete the sample `item` / `items` feature once you have created your own (see the guides).

@@ -2,12 +2,20 @@
   "name": "@ember/contracts",
   "version": "0.0.0",
   "private": true,
-  "description": "Types of the Ember HTTP API, shared by apps/api and apps/web",
+  "description": "Ember HTTP API contract (constants and types) shared by apps/api and apps/web",
   "type": "module",
-  "types": "./src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.2"
   }
 }

@@ -73,7 +73,7 @@ apps/api/
 | External client | `[provider]-[entity].client.ts` | `stripe-payment.client.ts` |
 | Guard / Pipe | `[name].guard.ts` / `[name].pipe.ts` | `jwt.guard.ts` |
 | Shared type (API-internal) | `[name].type.ts` | `serialized.type.ts` |
-| HTTP exchange type | in `packages/contracts`, `[domain].type.d.ts` | `item.type.d.ts` |
+| Shared with the web app (types, limits, enums) | in `packages/contracts`, `[domain].contract.ts` | `item.contract.ts` |
 | Utility | `[name].util.ts` | `uuid.util.ts` |
 | Unit test | next to the file, `.spec.ts` | `item.service.spec.ts` |
 | E2E test | in `test/`, `.e2e-spec.ts` | `test/item.e2e-spec.ts` |
@@ -129,9 +129,9 @@ bunx nest g service modules/product
 
 Then follow the `item` pattern:
 
-0. Exchanged types in `packages/contracts/src/product/product.type.d.ts` (`Product`, `CreateProductInput`, `UpdateProductInput`), re-exported from `src/index.d.ts`
+0. In `packages/contracts/src/product/product.contract.ts`: types (`Product`, `CreateProductInput`, `UpdateProductInput`) and limits (`PRODUCT_NAME_MAX_LENGTH`…), re-exported from `src/index.ts`
 1. `entities/product.entity.ts` (+ `@ApiProperty`) and `export type ProductMatchesContract = AssertTrue<SerializedAs<Product, ProductContract>>`
-2. `dto/create-product.dto.ts` (class-validator, `implements CreateProductInput`) and `dto/update-product.dto.ts` (`PartialType`, `implements UpdateProductInput`)
+2. `dto/create-product.dto.ts` (class-validator with the contract limits, e.g. `@MaxLength(PRODUCT_NAME_MAX_LENGTH)`, `implements CreateProductInput`) and `dto/update-product.dto.ts` (`PartialType`, `implements UpdateProductInput`)
 3. Tables in `core/database/schemas/{sqlite,postgres,mysql}/product.schema.ts`, exported by each `index.ts`, then `MIGRATION_NAME=add_product bun run db:generate:all`
 4. `repositories/product.repository.ts` (`PRODUCT_REPOSITORY` token + type) and `repositories/drizzle-product.repository.ts`
 5. `ProductService` injecting `@Inject(PRODUCT_REPOSITORY)`
@@ -144,4 +144,4 @@ Then follow the `item` pattern:
 docker compose up --build api
 ```
 
-The image builds from the **repository root** (`docker build -f apps/api/Dockerfile .`) so that it includes `packages/contracts`; `apps/api/Dockerfile.dockerignore` limits the context to `apps/api` and the contracts.
+The image builds from the **repository root** (`docker build -f apps/api/Dockerfile .`) because the API depends on `packages/contracts` through the Bun workspace; `apps/api/Dockerfile.dockerignore` limits the context to what the image needs.

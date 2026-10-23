@@ -1,21 +1,31 @@
 # @ember/contracts
 
-Types of the HTTP API (requests, responses, errors), written once and imported by
-`apps/api` and `apps/web` with `import type { … } from '@ember/contracts'`.
+Everything the API and the web app must agree on, written once: types of the HTTP
+requests and responses, validation limits, defaults and enumerations.
 
-- **Types only**: files are `.d.ts`, so they hold interfaces and type aliases, never
-  runtime code (no `enum`, constants or functions). They are erased at compile time:
-  no build step, nothing to install.
-- **Wire format**: types describe the JSON, so dates are ISO 8601 `string`s
-  (the API entities use `Date`).
-- Resolved through the `@ember/contracts` path alias in `apps/api/tsconfig.json` and
-  `apps/web/tsconfig.json`.
-- The mobile app (Kotlin) cannot import them: mirror every change in its `*Dto.kt`.
+```ts
+import { ITEM_NAME_MAX_LENGTH, PAGINATION, type CreateItemInput } from '@ember/contracts'
+```
 
-## Adding a contract
+- **Plain TypeScript, no dependencies**: constants, interfaces, `as const` arrays and
+  their union types. No framework imports, so both NestJS and the browser can load it.
+- **Validation stays in each app**: the API keeps NestJS-native class-validator DTOs
+  (`@MaxLength(ITEM_NAME_MAX_LENGTH)`, `implements CreateItemInput`); the web app uses
+  the same constants in its forms and routes. Only the rules' values are shared, never
+  hard-coded in an app.
+- **Wire format**: types describe the JSON, so dates are ISO 8601 `string`s (API
+  entities use `Date` and are checked with `SerializedAs`).
+- **Build**: `tsc` compiles `src/` to `dist/` (what both apps import). The root
+  `postinstall` and every api/web script (`pre*`) rebuild it; `bun run dev` at the root
+  watches it.
+- **Mobile**: Kotlin cannot import it; mirror changes in the `*Dto.kt` files and
+  constants such as `ItemsRepository.PAGE_SIZE`.
 
-1. `src/<domain>/<domain>.type.d.ts` (singular domain, like `modules/<domain>` in the API).
-2. Re-export it from `src/index.d.ts`.
-3. API: DTOs `implements` the request types, and the entity is checked against the
-   response type with `SerializedAs` (see `apps/api/src/modules/item/entities/item.entity.ts`).
-4. Web: import the types in `src/lib/<domain>.ts` and components.
+## Adding to the contract
+
+1. `src/<domain>/<domain>.contract.ts` (singular domain, like `modules/<domain>` in the API).
+2. Re-export it from `src/index.ts`.
+3. API: DTOs `implements` the request types and use the constants in their decorators;
+   the entity is checked against the response type with `SerializedAs`
+   (see `apps/api/src/modules/item/entities/item.entity.ts`).
+4. Web: import the types and constants in `src/lib/<domain>.ts`, components and routes.
