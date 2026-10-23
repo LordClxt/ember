@@ -1,0 +1,10 @@
+# Build context is the repo root (see docker-compose.yml); only apps/api and
+# packages/contracts are needed.
+**
+!apps/api/**
+!packages/contracts/**
+**/node_modules
+**/.env
+apps/api/dist
+apps/api/coverage
+apps/api/data

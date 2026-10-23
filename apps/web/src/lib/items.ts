@@ -1,19 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { apiFetch } from './api-client'
-import type { Paginated } from './api-client'
-
-export interface Item {
-  id: string
-  name: string
-  description: string | null
-  createdAt: string
-  updatedAt: string
-}
-
-export interface CreateItemInput {
-  name: string
-  description?: string
-}
+import type { CreateItemInput, Item, Paginated } from '@ember/contracts'
 
 /** Endpoints of `/api/v1/items`. */
 export const itemsApi = {

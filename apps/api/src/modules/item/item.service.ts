@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { Paginated } from '../../common/types/paginated.type.js';
+import type { Paginated } from '@ember/contracts';
 import type { CreateItemDto } from './dto/create-item.dto.js';
 import type { UpdateItemDto } from './dto/update-item.dto.js';
 import type { Item } from './entities/item.entity.js';

@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import type { Item } from '@/lib/items'
+import type { Item } from '@ember/contracts'
 
 interface ItemListProps {
   items: Array<Item>

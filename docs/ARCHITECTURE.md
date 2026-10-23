@@ -13,7 +13,7 @@
 └────────────────┘
 ```
 
-Les trois apps sont **indépendantes** (chacune son gestionnaire de dépendances et son build) mais partagent un **contrat d'API** unique.
+Les trois apps sont **indépendantes** (chacune ses dépendances et son build) mais partagent un **contrat d'API** unique. Ses types sont écrits une fois dans `packages/contracts` (`@ember/contracts`) et importés par l'API et le web ; le mobile (Kotlin) les reproduit dans ses `*Dto.kt`.
 
 ## Contrat d'API
 
@@ -39,6 +39,26 @@ Préfixe : `/api`, versionnement par URI (`/api/v1`). La documentation OpenAPI e
 ```
 
 Dates en ISO 8601 (UTC). Identifiants en UUID v7 (triables par date de création).
+
+### Types partagés (`packages/contracts`)
+
+```
+packages/contracts/src/
+├── index.d.ts                  # réexporte tout
+├── common/
+│   ├── api-error.type.d.ts     # ApiErrorBody
+│   └── paginated.type.d.ts     # PaginationQuery, PaginationMeta, Paginated<T>
+└── item/
+    └── item.type.d.ts          # Item, CreateItemInput, UpdateItemInput
+```
+
+| Côté | Usage |
+|------|-------|
+| API | `CreateItemDto implements CreateItemInput`, `PaginationQueryDto implements PaginationQuery`, corps d'erreur typé `ApiErrorBody`, entité vérifiée à la compilation contre `Item` (`SerializedAs`) |
+| Web | `lib/items.ts`, `lib/api-client.ts`, composants et hooks importent les types |
+| Mobile | miroir manuel dans `ItemDto.kt` |
+
+Les fichiers sont des `.d.ts` (types seulement, effacés à la compilation) résolus par l'alias `@ember/contracts` des deux `tsconfig.json` : aucun build ni install supplémentaire. Détails : [packages/contracts/README.md](../packages/contracts/README.md).
 
 ## Patterns par couche
 

@@ -1,7 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import type { CreateItemInput } from '@ember/contracts';
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
-export class CreateItemDto {
+export class CreateItemDto implements CreateItemInput {
   @ApiProperty({ example: 'My first item', maxLength: 120 })
   @IsString()
   @IsNotEmpty()

@@ -1,10 +1,12 @@
 import { ApiPropertyOptional, OmitType, PartialType } from '@nestjs/swagger';
+import type { UpdateItemInput } from '@ember/contracts';
 import { IsNotEmpty, IsString, MaxLength, ValidateIf } from 'class-validator';
 import { CreateItemDto } from './create-item.dto.js';
 
-export class UpdateItemDto extends PartialType(
-  OmitType(CreateItemDto, ['name'] as const),
-) {
+export class UpdateItemDto
+  extends PartialType(OmitType(CreateItemDto, ['name'] as const))
+  implements UpdateItemInput
+{
   /**
    * May be omitted but not nulled: `@IsOptional()` (added by `PartialType`)
    * would also let `null` through and break the `name: string` contract.

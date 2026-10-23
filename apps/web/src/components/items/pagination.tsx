@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { buttonVariants } from '@/components/ui/button'
-import type { PaginationMeta } from '@/lib/api-client'
+import type { PaginationMeta } from '@ember/contracts'
 
 export function Pagination({ page, limit, total }: PaginationMeta) {
   const pages = Math.max(1, Math.ceil(total / limit))

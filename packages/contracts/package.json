@@ -1,0 +1,13 @@
+{
+  "name": "@ember/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Types of the Ember HTTP API, shared by apps/api and apps/web",
+  "type": "module",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts"
+    }
+  }
+}

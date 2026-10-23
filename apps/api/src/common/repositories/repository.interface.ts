@@ -1,4 +1,4 @@
-import type { PaginationMeta } from '../types/paginated.type.js';
+import type { PaginationMeta } from '@ember/contracts';
 
 /**
  * Generic repository contract. Services depend on this abstraction,

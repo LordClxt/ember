@@ -8,7 +8,10 @@
 #     docker compose --profile mysql up --build
 services:
   api:
-    build: ./apps/api
+    build:
+      # Repo root, so the image can see packages/contracts.
+      context: .
+      dockerfile: apps/api/Dockerfile
     # Retries until the optional postgres/mysql service accepts connections.
     restart: on-failure
     ports:

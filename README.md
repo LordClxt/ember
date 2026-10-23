@@ -58,6 +58,8 @@ ember/
 │   ├── api/       # NestJS : REST /api/v1, Drizzle
 │   ├── web/       # TanStack Start : SSR, consomme l'API
 │   └── mobile/    # KMP — shared (logique + UI Compose), androidApp, iosApp
+├── packages/
+│   └── contracts/ # types de l'API partagés par api et web (@ember/contracts)
 ├── docs/          # Architecture, conventions, guides par app
 ├── .github/       # CI, templates d'issues / PR
 └── docker-compose.yml

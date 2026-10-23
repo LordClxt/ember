@@ -89,7 +89,7 @@ Variable d'environnement (voir `.env.example`) :
 
 Exemple pour `products` :
 
-1. `lib/products.ts` : type, `productsApi`, `productKeys`, `productsQueryOptions`
+1. `lib/products.ts` : `productsApi`, `productKeys`, `productsQueryOptions`, typés avec `import type { Product } from '@ember/contracts'` (le type est créé côté contrats, pas ici)
 2. `hooks/use-product-mutations.ts`
 3. `components/products/` : composants du domaine
 4. `routes/products/route.tsx`, `index.tsx`, `$id.tsx` (loader + `useSuspenseQuery`)

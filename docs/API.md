@@ -23,7 +23,7 @@ apps/api/
 │   │   ├── filters/                # http-exception.filter.ts
 │   │   ├── interceptors/           # logging.interceptor.ts
 │   │   ├── repositories/           # repository.interface.ts
-│   │   ├── types/                  # paginated.type.ts, base-entity.type.ts
+│   │   ├── types/                  # base-entity.type.ts, serialized.type.ts
 │   │   └── utils/                  # uuid.util.ts (UUID v7)
 │   ├── integrations/               # clients de services externes (Stripe, AWS…)
 │   ├── modules/                    # features métier, un dossier par domaine
@@ -72,7 +72,8 @@ apps/api/
 | Schéma Drizzle | `[entity].schema.ts` | `item.schema.ts` |
 | Client externe | `[provider]-[entity].client.ts` | `stripe-payment.client.ts` |
 | Guard / Pipe | `[name].guard.ts` / `[name].pipe.ts` | `jwt.guard.ts` |
-| Type partagé | `[name].type.ts` | `paginated.type.ts` |
+| Type partagé (interne à l'API) | `[name].type.ts` | `serialized.type.ts` |
+| Type d'échange HTTP | dans `packages/contracts`, `[domain].type.d.ts` | `item.type.d.ts` |
 | Utilitaire | `[name].util.ts` | `uuid.util.ts` |
 | Test unitaire | à côté du fichier, `.spec.ts` | `item.service.spec.ts` |
 | Test e2e | dans `test/`, `.e2e-spec.ts` | `test/item.e2e-spec.ts` |
@@ -128,8 +129,9 @@ bunx nest g service modules/product
 
 Puis reproduis le pattern `item` :
 
-1. `entities/product.entity.ts` (+ `@ApiProperty`)
-2. `dto/create-product.dto.ts` (class-validator) et `dto/update-product.dto.ts` (`PartialType`)
+0. Types d'échange dans `packages/contracts/src/product/product.type.d.ts` (`Product`, `CreateProductInput`, `UpdateProductInput`), réexportés par `src/index.d.ts`
+1. `entities/product.entity.ts` (+ `@ApiProperty`) et `export type ProductMatchesContract = AssertTrue<SerializedAs<Product, ProductContract>>`
+2. `dto/create-product.dto.ts` (class-validator, `implements CreateProductInput`) et `dto/update-product.dto.ts` (`PartialType`, `implements UpdateProductInput`)
 3. Tables dans `core/database/schemas/{sqlite,postgres,mysql}/product.schema.ts`, exportées par chaque `index.ts`, puis `MIGRATION_NAME=add_product bun run db:generate:all`
 4. `repositories/product.repository.ts` (token `PRODUCT_REPOSITORY` + type) et `repositories/drizzle-product.repository.ts`
 5. `ProductService` injectant `@Inject(PRODUCT_REPOSITORY)`
@@ -141,3 +143,5 @@ Puis reproduis le pattern `item` :
 ```bash
 docker compose up --build api
 ```
+
+L'image se construit depuis la **racine du dépôt** (`docker build -f apps/api/Dockerfile .`) pour inclure `packages/contracts` ; `apps/api/Dockerfile.dockerignore` limite le contexte à `apps/api` et aux contrats.
