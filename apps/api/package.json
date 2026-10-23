@@ -7,18 +7,25 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "prebuild": "bun run --cwd ../../packages/contracts build",
     "build": "nest build",
     "deploy": "nest deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prestart": "bun run --cwd ../../packages/contracts build",
     "start": "nest start",
+    "prestart:dev": "bun run --cwd ../../packages/contracts build",
     "start:dev": "nest start --watch",
+    "prestart:debug": "bun run --cwd ../../packages/contracts build",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "prelint": "bun run --cwd ../../packages/contracts build",
     "lint": "oxlint --type-aware src/ test/",
+    "pretest": "bun run --cwd ../../packages/contracts build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
+    "pretest:e2e": "bun run --cwd ../../packages/contracts build",
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
     "db:generate": "drizzle-kit generate",
     "db:generate:all": "for p in sqlite postgres mysql; do DB_PROVIDER=$p drizzle-kit generate --name ${MIGRATION_NAME:-migration} || exit 1; done",
@@ -26,6 +33,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@ember/contracts": "workspace:*",
     "@libsql/client": "^0.18.0",
     "@nestjs/common": "^12.0.1",
     "@nestjs/config": "^12.0.1",
@@ -62,5 +70,6 @@
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
     "vitest": "^4.1.2"
-  }
+  },
+  "packageManager": "bun@1.4.4"
 }

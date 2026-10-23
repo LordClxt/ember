@@ -71,7 +71,9 @@ fun ItemsScreen(viewModel: ItemsViewModel = koinViewModel()) {
             Box(Modifier.fillMaxSize().padding(top = 16.dp), contentAlignment = Alignment.Center) {
                 when {
                     state.isLoading && state.items.isEmpty() -> CircularProgressIndicator()
+
                     state.loadError != null -> ErrorContent(state.loadError!!, onRetry = viewModel::refresh)
+
                     else -> ItemsList(
                         items = state.items,
                         isLoadingMore = state.isLoadingMore,

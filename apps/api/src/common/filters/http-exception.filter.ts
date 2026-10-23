@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
+import type { ApiErrorBody } from '@ember/contracts';
 import type { Request, Response } from 'express';
 
 /** Normalises every error into the same JSON shape for all clients. */
@@ -36,11 +37,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
       this.logger.error(exception);
     }
 
-    response.status(status).json({
+    const errorBody: ApiErrorBody = {
       statusCode: status,
       message,
       path: request.url,
       timestamp: new Date().toISOString(),
-    });
+    };
+    response.status(status).json(errorBody);
   }
 }

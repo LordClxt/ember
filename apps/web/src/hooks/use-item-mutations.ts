@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { itemKeys, itemsApi } from '@/lib/items'
-import type { CreateItemInput } from '@/lib/items'
+import type { CreateItemInput } from '@ember/contracts'
 
 /** Write operations on items; every success refreshes the cached lists. */
 export function useItemMutations() {

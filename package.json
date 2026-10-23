@@ -5,17 +5,31 @@
   "description": "Ember — TanStack Start / NestJS / Kotlin Multiplatform boilerplate",
   "license": "MIT",
   "scripts": {
-    "install:all": "npm --prefix apps/api ci && npm --prefix apps/web ci",
-    "dev": "concurrently -n api,web -c yellow,cyan \"npm --prefix apps/api run start:dev\" \"npm --prefix apps/web run dev\"",
-    "dev:api": "npm --prefix apps/api run start:dev",
-    "dev:web": "npm --prefix apps/web run dev",
-    "build": "npm --prefix apps/api run build && npm --prefix apps/web run build",
-    "test": "npm --prefix apps/api test && npm --prefix apps/api run test:e2e && npm --prefix apps/web test",
-    "lint": "npm --prefix apps/api run lint && npm --prefix apps/web run lint && npm --prefix apps/web run typecheck",
+    "dev": "concurrently -n contracts,api,web -c gray,yellow,cyan \"bun run --cwd packages/contracts dev\" \"bun run --cwd apps/api start:dev\" \"bun run --cwd apps/web dev\"",
+    "dev:api": "bun run --cwd apps/api start:dev",
+    "dev:web": "bun run --cwd apps/web dev",
+    "build": "bun run --cwd packages/contracts build && bun run --cwd apps/api build && bun run --cwd apps/web build",
+    "test": "bun run --cwd apps/api test && bun run --cwd apps/api test:e2e && bun run --cwd apps/web test",
+    "lint": "bun run --cwd packages/contracts typecheck && bun run --cwd apps/api lint && bun run --cwd apps/web lint && bun run --cwd apps/web typecheck",
     "mobile:android": "cd apps/mobile && ./gradlew :androidApp:assembleDebug",
-    "mobile:test": "cd apps/mobile && ./gradlew :shared:testAndroidHostTest"
+    "mobile:test": "cd apps/mobile && ./gradlew :shared:testAndroidHostTest",
+    "prepare": "husky",
+    "format": "prettier --write . && bun run format:kotlin",
+    "format:check": "prettier --check .",
+    "format:kotlin": "cd apps/mobile && ./gradlew spotlessApply",
+    "format:kotlin:check": "cd apps/mobile && ./gradlew spotlessCheck",
+    "postinstall": "bun run --cwd packages/contracts build"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
-  }
+    "concurrently": "^9.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10"
+  },
+  "packageManager": "bun@1.4.4",
+  "workspaces": [
+    "apps/api",
+    "apps/web",
+    "packages/*"
+  ]
 }

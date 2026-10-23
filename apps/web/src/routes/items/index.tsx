@@ -6,18 +6,23 @@ import { ItemList } from '@/components/items/item-list'
 import { Pagination } from '@/components/items/pagination'
 import { useItemMutations } from '@/hooks/use-item-mutations'
 import { itemsQueryOptions } from '@/lib/items'
+import { PAGINATION } from '@ember/contracts'
 
 interface ItemsSearch {
-  /** Optional so links can omit it; defaults to 1. */
+  /** Optional so links can omit it; defaults to `PAGINATION.DEFAULT_PAGE`. */
   page?: number
 }
 
 export const Route = createFileRoute('/items/')({
   validateSearch: (search: Record<string, unknown>): ItemsSearch => {
     const page = Number(search.page)
-    return Number.isInteger(page) && page > 1 ? { page } : {}
+    return Number.isInteger(page) && page > PAGINATION.DEFAULT_PAGE
+      ? { page }
+      : {}
   },
-  loaderDeps: ({ search }) => ({ page: search.page ?? 1 }),
+  loaderDeps: ({ search }) => ({
+    page: search.page ?? PAGINATION.DEFAULT_PAGE,
+  }),
   // Runs on the server for the first render, then on client navigations.
   loader: ({ context, deps }) =>
     context.queryClient.ensureQueryData(itemsQueryOptions(deps.page)),
@@ -25,7 +30,7 @@ export const Route = createFileRoute('/items/')({
 })
 
 function ItemsPage() {
-  const { page = 1 } = Route.useSearch()
+  const { page = PAGINATION.DEFAULT_PAGE } = Route.useSearch()
   const { data } = useSuspenseQuery(itemsQueryOptions(page))
   const { create, remove } = useItemMutations()
   const mutationError = create.error ?? remove.error

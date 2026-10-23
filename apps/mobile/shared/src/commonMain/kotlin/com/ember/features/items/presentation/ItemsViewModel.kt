@@ -41,6 +41,7 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
                         isLoading = false,
                     )
                 }
+
                 is AppResult.Failure -> _state.update {
                     it.copy(isLoading = false, loadError = result.error.toUserMessage())
                 }
@@ -64,6 +65,7 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
                         isLoadingMore = false,
                     )
                 }
+
                 is AppResult.Failure -> _state.update {
                     it.copy(isLoadingMore = false, message = result.error.toUserMessage())
                 }
@@ -89,6 +91,7 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
                         isSubmitting = false,
                     )
                 }
+
                 is AppResult.Failure -> _state.update {
                     it.copy(isSubmitting = false, message = result.error.toUserMessage())
                 }
@@ -102,6 +105,7 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
                 is AppResult.Success -> _state.update { state ->
                     state.copy(items = state.items.filterNot { it.id == id }, total = state.total - 1)
                 }
+
                 is AppResult.Failure -> _state.update {
                     it.copy(message = result.error.toUserMessage())
                 }

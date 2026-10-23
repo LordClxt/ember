@@ -1,59 +1,60 @@
 # Mobile — Kotlin Multiplatform
 
-UI **partagée** avec Compose Multiplatform : le module `shared` contient la logique *et* les écrans ; `androidApp` et `iosApp` ne sont que des points d'entrée.
+UI **shared** through Compose Multiplatform: the `shared` module holds the logic *and* the screens; `androidApp` and `iosApp` are only entry points.
 
 ```
 apps/mobile/
-├── gradle/libs.versions.toml      # catalogue de versions
+├── gradle/libs.versions.toml      # version catalog
 ├── shared/src/
 │   ├── commonMain/kotlin/com/ember/
-│   │   ├── App.kt                 # thème + navigation type-safe
+│   │   ├── App.kt                 # theme + type-safe navigation
 │   │   ├── core/
 │   │   │   ├── config/AppConfig.kt        # expect defaultApiBaseUrl()
 │   │   │   ├── network/HttpClientFactory.kt, SafeApiCall.kt
-│   │   │   ├── presentation/UiState.kt
+│   │   │   ├── pagination/Page.kt         # one page of a paginated list
 │   │   │   └── result/AppResult.kt        # AppResult / AppError
-│   │   ├── di/Koin.kt             # modules Koin
+│   │   ├── di/Koin.kt             # Koin modules
 │   │   ├── ui/theme/EmberTheme.kt
 │   │   └── features/items/
-│   │       ├── data/              # DTO, ItemsApi (Ktor), ItemsRepositoryImpl
+│   │       ├── data/              # DTOs, ItemsApi (Ktor), ItemsRepositoryImpl
 │   │       ├── domain/            # Item, ItemsRepository (interface)
-│   │       └── presentation/      # ItemsViewModel, ItemsScreen
-│   ├── commonTest/                # tests avec Ktor MockEngine
-│   ├── androidMain/               # actual Android (URL émulateur)
-│   └── iosMain/                   # actual iOS, MainViewController, initKoinIos
+│   │       └── presentation/      # ItemsUiState, ItemsViewModel, ItemsScreen
+│   ├── commonTest/                # tests with Ktor MockEngine and fake repositories
+│   ├── androidMain/               # Android actuals (emulator URL)
+│   └── iosMain/                   # iOS actuals, MainViewController, initKoinIos
 ├── androidApp/                    # Application + MainActivity
-└── iosApp/                        # projet Xcode (SwiftUI → ComposeUIViewController)
+└── iosApp/                        # Xcode project (SwiftUI → ComposeUIViewController)
 ```
 
-## Clean architecture légère
+## Light clean architecture
 
 ```
 Screen ──▶ ViewModel ──▶ Repository (interface, domain) ◀── RepositoryImpl ──▶ Api (Ktor)
-            StateFlow<UiState>         AppResult<T>                  safeApiCall
+            StateFlow<ItemsUiState>    AppResult<T>                  safeApiCall
 ```
 
-- Le **domaine** ne dépend de rien (pas de Ktor, pas de sérialisation).
-- Les **DTO** sont convertis en modèles domaine (`toDomain()`) dans la couche data.
-- Les **repositories** ne lèvent pas d'exceptions : ils renvoient `AppResult.Success` / `AppResult.Failure`.
-- Les **ViewModels** exposent un `StateFlow<UiState<T>>` immuable.
+- The **domain** depends on nothing (no Ktor, no serialization).
+- **DTOs** are converted to domain models (`toDomain()`) in the data layer. They mirror the types of `packages/contracts` by hand: keep them in sync.
+- **Repositories** never throw: they return `AppResult.Success` / `AppResult.Failure`.
+- **ViewModels** expose an immutable `StateFlow` of a screen state (`ItemsUiState`). A failed action never replaces the list: it sets a one-off `message` shown as a snackbar.
 
-## Commandes
+## Commands
 
 ```bash
 ./gradlew :androidApp:assembleDebug                 # APK
-./gradlew :androidApp:installDebug                  # installe sur l'émulateur
-./gradlew :shared:testAndroidHostTest               # tests commonTest (JVM)
-./gradlew :shared:linkDebugFrameworkIosSimulatorArm64  # framework iOS
+./gradlew :androidApp:installDebug                  # installs on the emulator
+./gradlew :shared:testAndroidHostTest               # commonTest tests (JVM)
+./gradlew :shared:linkDebugFrameworkIosSimulatorArm64  # iOS framework
+./gradlew spotlessApply                             # format (ktlint)
 ```
 
-iOS : ouvre `iosApp/iosApp.xcodeproj` dans Xcode ; la build phase appelle `:shared:embedAndSignAppleFrameworkForXcode`.
+iOS: open `iosApp/iosApp.xcodeproj` in Xcode; the build phase calls `:shared:embedAndSignAppleFrameworkForXcode`.
 
-## Ajouter une feature
+## Adding a feature
 
-1. `features/products/domain/` : modèle + interface `ProductsRepository`
-2. `features/products/data/` : DTO, `ProductsApi`, `ProductsRepositoryImpl`
-3. `features/products/presentation/` : `ProductsViewModel`, `ProductsScreen`
-4. Un module Koin `productsModule`, ajouté à `appModules`
-5. Une destination `@Serializable` + `composable<…>` dans `App.kt`
-6. Un test dans `commonTest` avec `MockEngine`
+1. `features/products/domain/`: model + `ProductsRepository` interface
+2. `features/products/data/`: DTOs (mirroring `packages/contracts`), `ProductsApi`, `ProductsRepositoryImpl`
+3. `features/products/presentation/`: `ProductsUiState`, `ProductsViewModel`, `ProductsScreen`
+4. A `productsModule` Koin module, added to `featureModules`
+5. A `@Serializable` destination + `composable<…>` in `App.kt`
+6. Tests in `commonTest` (`MockEngine` for the repository, a fake repository for the ViewModel)

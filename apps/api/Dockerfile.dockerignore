@@ -1,0 +1,12 @@
+# Build context is the repo root (Bun workspace); only what the API image needs.
+**
+!package.json
+!bun.lock
+!apps/api/**
+!apps/web/package.json
+!packages/contracts/**
+**/node_modules
+**/.env
+**/dist
+apps/api/coverage
+apps/api/data

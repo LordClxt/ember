@@ -7,6 +7,6 @@ import { nitro } from 'nitro/vite'
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
-  // Nitro builds a standalone Node server in `.output/` (`npm start`).
+  // Nitro builds a standalone Node server in `.output/` (`bun run start`).
   plugins: [devtools(), nitro(), tailwindcss(), tanstackStart(), viteReact()],
 })

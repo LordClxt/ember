@@ -3,6 +3,7 @@ package com.ember.features.items.data
 import com.ember.features.items.domain.Item
 import kotlinx.serialization.Serializable
 
+/** Mirrors `Item` in `packages/contracts/src/item/item.contract.ts`: keep both in sync. */
 @Serializable
 data class ItemDto(
     val id: String,

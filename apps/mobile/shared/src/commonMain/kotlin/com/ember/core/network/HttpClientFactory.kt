@@ -22,7 +22,12 @@ fun createHttpClient(config: AppConfig, engine: HttpClientEngine? = null): HttpC
     val block: io.ktor.client.HttpClientConfig<*>.() -> Unit = {
         expectSuccess = true
         install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true; explicitNulls = false })
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                    explicitNulls = false
+                },
+            )
         }
         install(HttpTimeout) {
             requestTimeoutMillis = 15_000

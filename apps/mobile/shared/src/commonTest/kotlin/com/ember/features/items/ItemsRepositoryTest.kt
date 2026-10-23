@@ -20,8 +20,7 @@ class ItemsRepositoryTest {
     private val config = AppConfig(apiBaseUrl = "http://test/api/v1", enableHttpLogs = false)
     private val jsonHeaders = headersOf(HttpHeaders.ContentType, "application/json")
 
-    private fun repository(engine: MockEngine) =
-        ItemsRepositoryImpl(KtorItemsApi(createHttpClient(config, engine)))
+    private fun repository(engine: MockEngine) = ItemsRepositoryImpl(KtorItemsApi(createHttpClient(config, engine)))
 
     @Test
     fun getItems_mapsPageToDomain() = runTest {

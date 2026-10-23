@@ -1,12 +1,5 @@
 import { env } from './env'
-
-/** Error body returned by the API's AllExceptionsFilter. */
-export interface ApiErrorBody {
-  statusCode: number
-  message: string | Array<string>
-  path: string
-  timestamp: string
-}
+import type { ApiErrorBody } from '@ember/contracts'
 
 export class ApiError extends Error {
   constructor(
@@ -16,18 +9,6 @@ export class ApiError extends Error {
     super(message)
     this.name = 'ApiError'
   }
-}
-
-export interface PaginationMeta {
-  page: number
-  limit: number
-  total: number
-}
-
-/** List envelope `{ data, meta }` used by every paginated endpoint. */
-export interface Paginated<T> {
-  data: Array<T>
-  meta: PaginationMeta
 }
 
 type Query = Record<string, string | number | boolean | undefined>

@@ -1,24 +1,14 @@
 import { queryOptions } from '@tanstack/react-query'
 import { apiFetch } from './api-client'
-import type { Paginated } from './api-client'
-
-export interface Item {
-  id: string
-  name: string
-  description: string | null
-  createdAt: string
-  updatedAt: string
-}
-
-export interface CreateItemInput {
-  name: string
-  description?: string
-}
+import { PAGINATION } from '@ember/contracts'
+import type { CreateItemInput, Item, Paginated } from '@ember/contracts'
 
 /** Endpoints of `/api/v1/items`. */
 export const itemsApi = {
-  list: (page = 1, limit = 20) =>
-    apiFetch<Paginated<Item>>('items', { query: { page, limit } }),
+  list: (
+    page: number = PAGINATION.DEFAULT_PAGE,
+    limit: number = PAGINATION.DEFAULT_LIMIT,
+  ) => apiFetch<Paginated<Item>>('items', { query: { page, limit } }),
   get: (id: string) => apiFetch<Item>(`items/${id}`),
   create: (input: CreateItemInput) =>
     apiFetch<Item>('items', { method: 'POST', body: input }),
