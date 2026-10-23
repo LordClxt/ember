@@ -15,7 +15,9 @@ export class ApiService {
   private readonly baseUrl = inject(APP_CONFIG).apiUrl;
 
   get<T>(path: string, params?: QueryParams): Observable<T> {
-    return this.http.get<T>(this.url(path), { params: new HttpParams({ fromObject: params ?? {} }) });
+    return this.http.get<T>(this.url(path), {
+      params: new HttpParams({ fromObject: params ?? {} }),
+    });
   }
 
   post<T>(path: string, body: unknown): Observable<T> {

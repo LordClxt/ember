@@ -1,0 +1,3 @@
+# Blocks the push if a file is not formatted (e.g. committed with --no-verify).
+# Fix with `npm run format`, commit, then push again.
+npm run format:check

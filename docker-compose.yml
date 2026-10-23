@@ -12,18 +12,18 @@ services:
     # Retries until the optional postgres/mysql service accepts connections.
     restart: on-failure
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       NODE_ENV: production
       PORT: 3000
       CORS_ORIGINS: http://localhost:3001
       DB_PROVIDER: ${DB_PROVIDER:-sqlite}
       DATABASE_URL: ${DATABASE_URL:-file:./data/ember.db}
-      DB_AUTO_MIGRATE: "true"
+      DB_AUTO_MIGRATE: 'true'
     volumes:
       - api-data:/app/data
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/health']
       interval: 10s
       timeout: 3s
       retries: 3
@@ -36,7 +36,7 @@ services:
       POSTGRES_PASSWORD: ember
       POSTGRES_DB: ember
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
@@ -49,7 +49,7 @@ services:
       MYSQL_DATABASE: ember
       MYSQL_ROOT_PASSWORD: ember
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - mysql-data:/var/lib/mysql
 

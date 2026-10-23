@@ -16,14 +16,12 @@ interface ItemsApi {
 }
 
 class KtorItemsApi(private val client: HttpClient) : ItemsApi {
-    override suspend fun list(page: Int, limit: Int): PaginatedDto<ItemDto> =
-        client.get("items") {
-            parameter("page", page)
-            parameter("limit", limit)
-        }.body()
+    override suspend fun list(page: Int, limit: Int): PaginatedDto<ItemDto> = client.get("items") {
+        parameter("page", page)
+        parameter("limit", limit)
+    }.body()
 
-    override suspend fun create(body: CreateItemDto): ItemDto =
-        client.post("items") { setBody(body) }.body()
+    override suspend fun create(body: CreateItemDto): ItemDto = client.post("items") { setBody(body) }.body()
 
     override suspend fun delete(id: String) {
         client.delete("items/$id")

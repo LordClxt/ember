@@ -6,6 +6,17 @@ on:
   pull_request:
 
 jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+
   api:
     runs-on: ubuntu-latest
     defaults:
@@ -52,7 +63,7 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew :shared:testAndroidHostTest :androidApp:assembleDebug
+      - run: ./gradlew spotlessCheck :shared:testAndroidHostTest :androidApp:assembleDebug
 
   ios:
     runs-on: macos-latest

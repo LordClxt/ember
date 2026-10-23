@@ -12,6 +12,8 @@ koin = "4.2.2"
 kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 ktor = "3.5.1"
+ktlint = "1.8.0"
+spotless = "8.10.4"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -45,4 +47,5 @@ androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library",
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -2,3 +2,9 @@ root = true
 
 [*]
 ij_kotlin_name_count_to_use_star_import = 2147483647
+
+[*.{kt,kts}]
+# Same rules as Android Studio's "Reformat Code", so the IDE and ktlint agree.
+ktlint_code_style = intellij_idea
+# Composables are PascalCase by convention.
+ktlint_function_naming_ignore_when_annotated_with = Composable

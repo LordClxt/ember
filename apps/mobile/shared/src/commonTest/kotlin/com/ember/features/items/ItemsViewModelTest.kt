@@ -25,16 +25,19 @@ class ItemsViewModelTest {
         val stored = MutableList(total) { Item(id = "$it", name = "Item $it", description = null) }
         var failWrites = false
 
-        override suspend fun getItems(page: Int, limit: Int): AppResult<Page<Item>> =
-            AppResult.Success(Page(stored.drop((page - 1) * limit).take(limit), page, limit, stored.size))
+        override suspend fun getItems(page: Int, limit: Int): AppResult<Page<Item>> = AppResult.Success(Page(stored.drop((page - 1) * limit).take(limit), page, limit, stored.size))
 
-        override suspend fun createItem(name: String, description: String?): AppResult<Item> =
-            if (failWrites) AppResult.Failure(AppError.Http(400, "name too long"))
-            else AppResult.Success(Item("new", name, description).also { stored += it })
+        override suspend fun createItem(name: String, description: String?): AppResult<Item> = if (failWrites) {
+            AppResult.Failure(AppError.Http(400, "name too long"))
+        } else {
+            AppResult.Success(Item("new", name, description).also { stored += it })
+        }
 
-        override suspend fun deleteItem(id: String): AppResult<Unit> =
-            if (failWrites) AppResult.Failure(AppError.Http(404, "Item $id not found"))
-            else AppResult.Success(Unit).also { stored.removeAll { it.id == id } }
+        override suspend fun deleteItem(id: String): AppResult<Unit> = if (failWrites) {
+            AppResult.Failure(AppError.Http(404, "Item $id not found"))
+        } else {
+            AppResult.Success(Unit).also { stored.removeAll { it.id == id } }
+        }
     }
 
     @BeforeTest

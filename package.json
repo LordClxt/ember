@@ -2,7 +2,7 @@
   "name": "ember",
   "version": "0.1.0",
   "private": true,
-  "description": "Ember \u2014 Angular / NestJS / Kotlin Multiplatform boilerplate",
+  "description": "Ember — Angular / NestJS / Kotlin Multiplatform boilerplate",
   "license": "MIT",
   "scripts": {
     "install:all": "npm --prefix apps/api ci && npm --prefix apps/web ci",
@@ -13,9 +13,17 @@
     "test": "npm --prefix apps/api test && npm --prefix apps/api run test:e2e && npm --prefix apps/web test -- --watch=false",
     "lint": "npm --prefix apps/api run lint",
     "mobile:android": "cd apps/mobile && ./gradlew :androidApp:assembleDebug",
-    "mobile:test": "cd apps/mobile && ./gradlew :shared:testAndroidHostTest"
+    "mobile:test": "cd apps/mobile && ./gradlew :shared:testAndroidHostTest",
+    "prepare": "husky",
+    "format": "prettier --write . && npm run format:kotlin",
+    "format:check": "prettier --check .",
+    "format:kotlin": "cd apps/mobile && ./gradlew spotlessApply",
+    "format:kotlin:check": "cd apps/mobile && ./gradlew spotlessCheck"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10"
   }
 }

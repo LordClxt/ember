@@ -27,7 +27,7 @@ chore(mobile): bump ktor to 3.5.1
 - Pages routées en `export default` pour un lazy-loading concis.
 - NestJS : un module par feature, DTO validés, aucune logique dans les controllers.
 - Kotlin : `StateFlow` immuable exposé par les ViewModels, repositories qui retournent `AppResult` au lieu de lever des exceptions.
-- Formatage : Prettier (TS), style officiel Kotlin (`.editorconfig`).
+- Formatage : Prettier (TS…) et ktlint via Spotless (Kotlin), appliqués par les hooks Git — voir [CONTRIBUTING](../CONTRIBUTING.md#formatage).
 
 ## Tests
 

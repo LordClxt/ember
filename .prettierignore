@@ -1,0 +1,16 @@
+# Generated / vendored
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+**/.angular/
+**/.tanstack/
+**/.output/
+**/.gradle/
+package-lock.json
+apps/api/drizzle/
+apps/api/data/
+
+# Not formatted by Prettier
+*.md
+apps/mobile/

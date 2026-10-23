@@ -7,7 +7,9 @@ import { ItemsStore } from './data/items.store';
   imports: [ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1>Items <small>({{ store.count() }})</small></h1>
+    <h1>
+      Items <small>({{ store.count() }})</small>
+    </h1>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
       <input formControlName="name" placeholder="New item name" aria-label="Item name" />
@@ -17,7 +19,9 @@ import { ItemsStore } from './data/items.store';
     @if (store.loading() && store.count() === 0) {
       <p>Loading…</p>
     } @else if (store.error()) {
-      <p class="error">{{ store.error() }} <button type="button" (click)="store.load()">Retry</button></p>
+      <p class="error">
+        {{ store.error() }} <button type="button" (click)="store.load()">Retry</button>
+      </p>
     } @else {
       <ul>
         @for (item of store.items(); track item.id) {
@@ -32,11 +36,27 @@ import { ItemsStore } from './data/items.store';
     }
   `,
   styles: `
-    form { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
-    input { flex: 1; }
-    ul { list-style: none; padding: 0; }
-    li { display: flex; justify-content: space-between; padding: .75rem 0; border-bottom: 1px solid var(--border); }
-    .error { color: #c62828; }
+    form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    input {
+      flex: 1;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .error {
+      color: #c62828;
+    }
   `,
 })
 export default class ItemsPage implements OnInit {
