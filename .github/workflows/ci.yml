@@ -10,12 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Node is the runtime (Nest CLI, Vitest, Nitro); Bun installs and runs scripts.
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm run format:check
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+      - run: bun install --frozen-lockfile
+      - run: bun run format:check
 
   api:
     runs-on: ubuntu-latest
@@ -24,16 +31,22 @@ jobs:
         working-directory: apps/api
     steps:
       - uses: actions/checkout@v4
+      # Node is the runtime (Nest CLI, Vitest, Nitro); Bun installs and runs scripts.
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: apps/api/package-lock.json
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run build
-      - run: npm test
-      - run: npm run test:e2e
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: apps/api/package.json
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('apps/api/bun.lock') }}
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+      - run: bun run build
+      - run: bun run test
+      - run: bun run test:e2e
 
   web:
     runs-on: ubuntu-latest
@@ -42,16 +55,22 @@ jobs:
         working-directory: apps/web
     steps:
       - uses: actions/checkout@v4
+      # Node is the runtime (Nest CLI, Vitest, Nitro); Bun installs and runs scripts.
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: apps/web/package-lock.json
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: apps/web/package.json
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('apps/web/bun.lock') }}
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+      - run: bun run typecheck
+      - run: bun run test
+      - run: bun run build
 
   android:
     runs-on: ubuntu-latest

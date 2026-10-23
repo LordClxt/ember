@@ -1,9 +1,11 @@
 FROM node:24-alpine AS build
+# Bun installs dependencies and runs scripts; Node stays the runtime.
+COPY --from=oven/bun:1.4.4-alpine /usr/local/bin/bun /usr/local/bin/bun
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 COPY . .
-RUN npm run build && npm prune --omit=dev
+RUN bun run build && rm -rf node_modules && bun install --frozen-lockfile --production
 
 FROM node:24-alpine
 WORKDIR /app

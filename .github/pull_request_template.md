@@ -9,6 +9,6 @@
 ## Checklist
 
 - [ ] Tests added or updated
-- [ ] `npm test` passes (api + web)
+- [ ] `bun run test` passes (api + web)
 - [ ] `./gradlew :shared:testAndroidHostTest` passes (mobile, if touched)
 - [ ] Docs updated if behaviour changed

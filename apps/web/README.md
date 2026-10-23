@@ -3,7 +3,7 @@
 TanStack Start (React, SSR). Voir [docs/WEB.md](../../docs/WEB.md).
 
 ```bash
-npm install
+bun install
 cp .env.example .env
-npm run dev   # http://localhost:3001
+bun run dev   # http://localhost:3001
 ```

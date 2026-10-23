@@ -95,12 +95,12 @@ Les **routes HTTP** restent au pluriel (`/api/v1/items`) : c'est la convention R
 ## Commandes
 
 ```bash
-npm run start:dev    # watch mode
-npm test             # tests unitaires (Vitest)
-npm run test:e2e     # tests e2e (supertest, SQLite en mémoire)
-npm run lint         # oxlint
-npm run build
-npm run db:generate  # voir DATABASE.md
+bun run start:dev    # watch mode
+bun run test             # tests unitaires (Vitest)
+bun run test:e2e     # tests e2e (supertest, SQLite en mémoire)
+bun run lint         # oxlint
+bun run build
+bun run db:generate  # voir DATABASE.md
 ```
 
 ## Configuration
@@ -121,16 +121,16 @@ Lecture typée : `configService.get('database', { infer: true })`.
 ## Ajouter un module
 
 ```bash
-npx nest g module modules/product
-npx nest g controller modules/product --no-spec
-npx nest g service modules/product
+bunx nest g module modules/product
+bunx nest g controller modules/product --no-spec
+bunx nest g service modules/product
 ```
 
 Puis reproduis le pattern `item` :
 
 1. `entities/product.entity.ts` (+ `@ApiProperty`)
 2. `dto/create-product.dto.ts` (class-validator) et `dto/update-product.dto.ts` (`PartialType`)
-3. Tables dans `core/database/schemas/{sqlite,postgres,mysql}/product.schema.ts`, exportées par chaque `index.ts`, puis `MIGRATION_NAME=add_product npm run db:generate:all`
+3. Tables dans `core/database/schemas/{sqlite,postgres,mysql}/product.schema.ts`, exportées par chaque `index.ts`, puis `MIGRATION_NAME=add_product bun run db:generate:all`
 4. `repositories/product.repository.ts` (token `PRODUCT_REPOSITORY` + type) et `repositories/drizzle-product.repository.ts`
 5. `ProductService` injectant `@Inject(PRODUCT_REPOSITORY)`
 6. `ProductController` fin, `@Controller({ path: 'products', version: '1' })`

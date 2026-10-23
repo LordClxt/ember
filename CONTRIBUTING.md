@@ -1,10 +1,10 @@
 # Contribuer
 
-1. Crée une branche depuis `main` (`feat/…`, `fix/…`), puis lance `npm install` à la racine : il installe les hooks Git (Husky).
+1. Crée une branche depuis `main` (`feat/…`, `fix/…`), puis lance `bun install` à la racine : il installe les hooks Git (Husky).
 2. Respecte les [conventions](docs/CONVENTIONS.md).
 3. Vérifie localement :
    ```bash
-   npm run lint && npm test
+   bun run lint && bun run test
    (cd apps/mobile && ./gradlew :shared:testAndroidHostTest)
    ```
 4. Ouvre une PR en remplissant le template. La CI (API, Web, Android, iOS) doit être verte.
@@ -19,12 +19,12 @@
 Les hooks Git s'en chargent :
 
 - **`git commit`** : `lint-staged` formate les fichiers indexés (Spotless est lancé si un fichier Kotlin est indexé, ce qui demande un JDK).
-- **`git push`** : `npm run format:check` bloque le push si un fichier n'est pas formaté (par exemple après un `--no-verify`).
+- **`git push`** : `bun run format:check` bloque le push si un fichier n'est pas formaté (par exemple après un `--no-verify`).
 
 À la main :
 
 ```bash
-npm run format               # Prettier + Spotless
-npm run format:check         # vérification Prettier (aussi en CI)
-npm run format:kotlin:check  # vérification Kotlin (aussi en CI, job android)
+bun run format               # Prettier + Spotless
+bun run format:check         # vérification Prettier (aussi en CI)
+bun run format:kotlin:check  # vérification Kotlin (aussi en CI, job android)
 ```

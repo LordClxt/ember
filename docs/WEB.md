@@ -48,7 +48,7 @@ apps/web/
 | `$param.tsx` | Segment dynamique (`$id.tsx` → `params.id`) |
 | `robots[.]txt.ts` | Point échappé : route serveur pour `/robots.txt` |
 | `$.tsx` | Catch-all, utilisé ici pour la 404 |
-| `routeTree.gen.ts` | Généré par le plugin Vite (ou `npm run generate-routes`), versionné, jamais édité à la main |
+| `routeTree.gen.ts` | Généré par le plugin Vite (ou `bun run generate-routes`), versionné, jamais édité à la main |
 
 ### Écart avec l'article : pas de `src/db/`
 
@@ -71,12 +71,12 @@ lib/items.ts ──▶ lib/api-client.ts (fetch) ──▶ NestJS /api/v1/items
 ## Commandes
 
 ```bash
-npm run dev          # http://localhost:3001
-npm test             # Vitest + Testing Library
-npm run lint         # ESLint (@tanstack/eslint-config)
-npm run typecheck
-npm run build        # client + serveur Nitro dans .output/
-npm start            # node .output/server/index.mjs
+bun run dev          # http://localhost:3001
+bun run test             # Vitest + Testing Library
+bun run lint         # ESLint (@tanstack/eslint-config)
+bun run typecheck
+bun run build        # client + serveur Nitro dans .output/
+bun run start            # node .output/server/index.mjs
 ```
 
 Variable d'environnement (voir `.env.example`) :

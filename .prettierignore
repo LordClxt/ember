@@ -7,7 +7,7 @@ apps/web/src/routeTree.gen.ts
 **/.tanstack/
 **/.output/
 **/.gradle/
-package-lock.json
+bun.lock
 apps/api/drizzle/
 apps/api/data/
 

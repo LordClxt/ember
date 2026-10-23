@@ -2,7 +2,7 @@ import { defineConfig } from 'drizzle-kit';
 
 /**
  * One schema and one migrations folder per provider:
- * `DB_PROVIDER=postgres npm run db:generate` writes to `drizzle/postgres`.
+ * `DB_PROVIDER=postgres bun run db:generate` writes to `drizzle/postgres`.
  */
 const provider = process.env.DB_PROVIDER ?? 'sqlite';
 const dialects = {

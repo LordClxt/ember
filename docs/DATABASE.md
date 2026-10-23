@@ -55,16 +55,16 @@ Elles s'appliquent automatiquement au démarrage si `DB_AUTO_MIGRATE=true` (la v
 
 ```bash
 # Après modification d'un schéma : générer pour les 3 providers
-MIGRATION_NAME=add_product npm run db:generate:all
+MIGRATION_NAME=add_product bun run db:generate:all
 
 # Un seul provider
-DB_PROVIDER=postgres npm run db:generate
+DB_PROVIDER=postgres bun run db:generate
 
 # Appliquer manuellement (si DB_AUTO_MIGRATE=false)
-DB_PROVIDER=postgres DATABASE_URL=postgres://… npm run db:migrate
+DB_PROVIDER=postgres DATABASE_URL=postgres://… bun run db:migrate
 
 # Explorer les données
-npm run db:studio
+bun run db:studio
 ```
 
 > Modifie toujours les **trois** schémas ensemble, puis régénère pour les trois providers. Sinon ils divergent.

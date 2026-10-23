@@ -4,7 +4,8 @@
 
 | Outil | Version | Pour |
 |-------|---------|------|
-| Node.js | 24+ | API, Web |
+| Node.js | 24+ | Runtime de l'API et du serveur web |
+| Bun | 1.4+ | Gestionnaire de paquets et scripts (`packageManager` : `bun@1.4.4`) |
 | JDK | 21 | Mobile |
 | Android Studio | récent + SDK 37 | Android |
 | Xcode | 16+ | iOS (macOS uniquement) |
@@ -12,11 +13,11 @@
 ## Installation
 
 ```bash
-npm install
-npm run install:all
+bun install
+bun run install:all
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env
-npm run dev
+bun run dev
 ```
 
 ## Lancer le mobile

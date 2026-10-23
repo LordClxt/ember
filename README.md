@@ -23,12 +23,12 @@ Puis suis la [checklist de renommage](docs/GETTING_STARTED.md#renommer-le-projet
 
 ## Démarrage rapide
 
-Prérequis : Node 24+, JDK 21, Android Studio (Android), Xcode 16+ (iOS). Aucune base de données à installer : SQLite est utilisé par défaut.
+Prérequis : Node 24+, Bun 1.4+, JDK 21, Android Studio (Android), Xcode 16+ (iOS). Aucune base de données à installer : SQLite est utilisé par défaut.
 
 ```bash
-npm install            # outils racine (concurrently)
-npm run install:all    # dépendances api + web
-npm run dev            # API sur :3000 + Web sur :3001
+bun install            # outils racine (concurrently)
+bun run install:all    # dépendances api + web
+bun run dev            # API sur :3000 + Web sur :3001
 ```
 
 | URL | Description |
@@ -43,12 +43,12 @@ Mobile : ouvre `apps/mobile` dans Android Studio (config *androidApp*) ou `apps/
 
 | Script | Effet |
 |--------|-------|
-| `npm run dev` | Lance API + Web en parallèle |
-| `npm run build` | Build API + Web |
-| `npm test` | Tests API (unit + e2e) + Web |
-| `npm run lint` | Lint API (oxlint) + Web (ESLint, tsc) |
-| `npm run mobile:android` | Build l'APK debug |
-| `npm run mobile:test` | Tests du module partagé KMP |
+| `bun run dev` | Lance API + Web en parallèle |
+| `bun run build` | Build API + Web |
+| `bun run test` | Tests API (unit + e2e) + Web |
+| `bun run lint` | Lint API (oxlint) + Web (ESLint, tsc) |
+| `bun run mobile:android` | Build l'APK debug |
+| `bun run mobile:test` | Tests du module partagé KMP |
 
 ## Structure
 

@@ -8,10 +8,12 @@ Monorepo **Ember** : `apps/api` (NestJS + Drizzle), `apps/web` (TanStack Start),
 
 ## Commandes
 
+Gestionnaire de paquets : **Bun** (lockfiles `bun.lock`, jamais `package-lock.json`). Node reste le runtime.
+
 | App | Install | Test | Build |
 |-----|---------|------|-------|
-| api | `npm --prefix apps/api ci` | `npm --prefix apps/api test && npm --prefix apps/api run test:e2e` | `npm --prefix apps/api run build` |
-| web | `npm --prefix apps/web ci` | `npm --prefix apps/web test && npm --prefix apps/web run typecheck` | `npm --prefix apps/web run build` |
+| api | `bun install --cwd apps/api` | `bun run --cwd apps/api test && bun run --cwd apps/api test:e2e` | `bun run --cwd apps/api build` |
+| web | `bun install --cwd apps/web` | `bun run --cwd apps/web test && bun run --cwd apps/web typecheck` | `bun run --cwd apps/web build` |
 | mobile | — | `cd apps/mobile && ./gradlew :shared:testAndroidHostTest` | `./gradlew :androidApp:assembleDebug` |
 
 ## Règles
@@ -20,7 +22,7 @@ Monorepo **Ember** : `apps/api` (NestJS + Drizzle), `apps/web` (TanStack Start),
 - Toute nouvelle feature reproduit le pattern `item` (API) / `items` (web, mobile) de l'app concernée.
 - API : respecter la structure et le nommage de [docs/API.md](docs/API.md) (`core/`, `common/`, `modules/<singulier>/`, `[action]-[entity].dto.ts`…).
 - Web : respecter [docs/WEB.md](docs/WEB.md) (routes par fichiers, `components/ui` + `components/<domaine>`, `lib/`, `hooks/`). Ne jamais éditer `routeTree.gen.ts`.
-- Base de données : modifier les **trois** schémas (`sqlite`, `postgres`, `mysql`) puis `npm run db:generate:all` ([docs/DATABASE.md](docs/DATABASE.md)).
+- Base de données : modifier les **trois** schémas (`sqlite`, `postgres`, `mysql`) puis `bun run db:generate:all` ([docs/DATABASE.md](docs/DATABASE.md)).
 - Un changement de contrat d'API doit être répercuté dans les trois apps (DTO NestJS, types de `apps/web/src/lib/<domaine>.ts`, `*Dto.kt` KMP) et dans `docs/ARCHITECTURE.md`.
 - L'API est en ESM : les imports relatifs se terminent par `.js`.
 - Ajouter ou mettre à jour les tests avec chaque changement.
