@@ -3,11 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter.js';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js';
-import { configuration } from './config/configuration.js';
-import { validateEnv } from './config/env.validation.js';
-import { DatabaseModule } from './database/database.module.js';
-import { HealthModule } from './modules/health/health.module.js';
-import { ItemsModule } from './modules/items/items.module.js';
+import { configuration } from './core/config/configuration.js';
+import { validateEnv } from './core/config/env.validation.js';
+import { DatabaseModule } from './core/database/database.module.js';
+import { HealthModule } from './core/health/health.module.js';
+import { ItemModule } from './modules/item/item.module.js';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { ItemsModule } from './modules/items/items.module.js';
     }),
     DatabaseModule,
     HealthModule,
-    ItemsModule,
+    ItemModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

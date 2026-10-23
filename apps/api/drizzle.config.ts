@@ -19,7 +19,7 @@ if (!dialect) {
 
 export default defineConfig({
   dialect,
-  schema: `./src/database/schema/${provider}/index.ts`,
+  schema: `./src/core/database/schemas/${provider}/index.ts`,
   out: `./drizzle/${provider}`,
   dbCredentials: { url: process.env.DATABASE_URL ?? 'file:./data/ember.db' },
 });

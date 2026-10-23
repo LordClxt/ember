@@ -13,23 +13,25 @@ chore(mobile): bump ktor to 3.5.1
 
 ## Nommage
 
-| Élément | API | Web | Mobile |
-|---------|-----|-----|--------|
-| Fichiers | `kebab-case.type.ts` (`items.service.ts`) | `kebab-case.type.ts` (`items.store.ts`, `items.page.ts`) | `PascalCase.kt` |
-| Classes | `ItemsService` | `ItemsStore`, `ItemsPage` | `ItemsViewModel` |
-| DTO | `CreateItemDto` | `CreateItem` (interface) | `CreateItemDto` |
-| Tests | `*.spec.ts` à côté du code, e2e dans `test/` | `*.spec.ts` à côté du code | `commonTest/` (même package) |
+| Élément | API (NestJS) | Web (TanStack Start) | Mobile (KMP) |
+|---------|--------------|----------------------|--------------|
+| Dossier de domaine | singulier : `modules/item/` | pluriel, comme l'URL : `routes/items/`, `components/items/` | `features/items/` |
+| Fichiers | `[name].[type].ts` : `item.service.ts`, `create-item.dto.ts` | `kebab-case.tsx` : `item-list.tsx`, `use-item-mutations.ts` | `PascalCase.kt` |
+| Classes / composants | `ItemService`, `CreateItemDto` | `ItemList`, `useItemMutations` | `ItemsViewModel` |
+| Tests | `*.spec.ts` à côté du code, e2e dans `test/*.e2e-spec.ts` | `*.test.ts(x)` à côté du code | `commonTest/` (même package) |
+
+Détails : [API.md](API.md#conventions-de-nommage), [WEB.md](WEB.md#règles-de-routage).
 
 ## Code
 
 - TypeScript `strict`. Pas de `any` sauf justification.
-- Angular : composants standalone, `ChangeDetectionStrategy.OnPush`, `inject()`, signals, control flow (`@if`, `@for`).
-- Pages routées en `export default` pour un lazy-loading concis.
+- Web : composants fonctionnels React, données via `queryOptions` + loader de route, jamais de `fetch` direct dans un composant.
+- `routeTree.gen.ts` est généré : ne jamais l'éditer.
 - NestJS : un module par feature, DTO validés, aucune logique dans les controllers.
 - Kotlin : `StateFlow` immuable exposé par les ViewModels, repositories qui retournent `AppResult` au lieu de lever des exceptions.
-- Formatage : Prettier (TS…) et ktlint via Spotless (Kotlin), appliqués par les hooks Git — voir [CONTRIBUTING](../CONTRIBUTING.md#formatage).
+- Formatage : Prettier (API : point-virgules, web : sans) et ktlint via Spotless (Kotlin), appliqués par les hooks Git — voir [CONTRIBUTING](../CONTRIBUTING.md#formatage).
 
 ## Tests
 
-- Chaque service / store / repository a au moins un test unitaire.
+- Chaque service, repository et utilitaire `lib/` a au moins un test unitaire.
 - Chaque endpoint public a un test e2e (`apps/api/test`).

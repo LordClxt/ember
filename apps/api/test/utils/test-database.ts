@@ -1,10 +1,10 @@
 import { fileURLToPath } from 'node:url';
-import { createDatabase } from '../../src/database/database.factory.js';
+import { createDatabase } from '../../src/core/database/database.factory.js';
 import type {
   Database,
   DatabaseConnection,
   Schema,
-} from '../../src/database/database.types.js';
+} from '../../src/core/database/database.types.js';
 
 /** Fresh, migrated in-memory SQLite database. */
 export async function createSqliteTestDatabase(): Promise<DatabaseConnection> {
@@ -24,7 +24,8 @@ export async function createPostgresTestDatabase(): Promise<DatabaseConnection> 
   const { PGlite } = await import('@electric-sql/pglite');
   const { drizzle } = await import('drizzle-orm/pglite');
   const { migrate } = await import('drizzle-orm/pglite/migrator');
-  const schema = await import('../../src/database/schema/postgres/index.js');
+  const schema =
+    await import('../../src/core/database/schemas/postgres/index.js');
   const client = new PGlite();
   const db = drizzle(client, { schema });
   await migrate(db, {
