@@ -1,6 +1,6 @@
 # Ember API
 
-NestJS 12 + Drizzle ORM (SQLite par défaut). Voir [docs/API.md](../../docs/API.md) et [docs/DATABASE.md](../../docs/DATABASE.md).
+NestJS 12 + Drizzle ORM (SQLite by default). See [docs/API.md](../../docs/API.md) and [docs/DATABASE.md](../../docs/DATABASE.md).
 
 ```bash
 bun install

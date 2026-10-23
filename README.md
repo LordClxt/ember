@@ -1,78 +1,79 @@
 # 🔥 Ember
 
-> Boilerplate full-stack **TanStack Start · NestJS · Kotlin Multiplatform** : des bases propres, sans logique métier.
+> Full-stack **TanStack Start · NestJS · Kotlin Multiplatform** boilerplate: clean foundations, no business logic.
 
-Ember fournit une structure prête à l'emploi pour démarrer un produit web + mobile avec une seule API.
-Un module d'exemple **`items`** (CRUD minimal) traverse les trois applications pour illustrer les patterns ; supprime-le ou duplique-le pour créer tes propres features.
+Ember gives you a ready-to-use structure to start a web + mobile product with a single API.
+A sample **`items`** module (minimal CRUD) runs through all three apps to show the patterns; delete it or copy it to build your own features.
 
-| App | Stack | Dossier |
-|-----|-------|---------|
-| **API** | NestJS 12, Drizzle ORM (SQLite par défaut · Postgres · MySQL), Swagger, Vitest | [`apps/api`](apps/api) |
+| App | Stack | Folder |
+|-----|-------|--------|
+| **API** | NestJS 12, Drizzle ORM (SQLite by default · Postgres · MySQL), Swagger, Vitest | [`apps/api`](apps/api) |
 | **Web** | TanStack Start (React 19, SSR), TanStack Router & Query, Tailwind 4, Vitest | [`apps/web`](apps/web) |
 | **Mobile** | Kotlin Multiplatform + Compose Multiplatform (Android & iOS), Ktor, Koin | [`apps/mobile`](apps/mobile) |
 
-## Utiliser ce template
+## Use this template
 
-Sur GitHub : **Use this template → Create a new repository**, ou :
+On GitHub: **Use this template → Create a new repository**, or:
 
 ```bash
-gh repo create mon-projet --template LordClxt/ember --private --clone
+gh repo create my-project --template LordClxt/ember --private --clone
 ```
 
-Puis suis la [checklist de renommage](docs/GETTING_STARTED.md#renommer-le-projet).
+Then follow the [renaming checklist](docs/GETTING_STARTED.md#rename-the-project).
 
-## Démarrage rapide
+## Quick start
 
-Prérequis : Node 24+, Bun 1.4+, JDK 21, Android Studio (Android), Xcode 16+ (iOS). Aucune base de données à installer : SQLite est utilisé par défaut.
+Prerequisites: Node 24+, Bun 1.4+, JDK 21, Android Studio (Android), Xcode 16+ (iOS). No database to install: SQLite is used by default.
 
 ```bash
-bun install            # outils racine (concurrently)
-bun run install:all    # dépendances api + web
-bun run dev            # API sur :3000 + Web sur :3001
+bun install            # root tooling (concurrently, Husky)
+bun run install:all    # api + web dependencies
+bun run dev            # API on :3000 + web on :3001
 ```
 
 | URL | Description |
 |-----|-------------|
-| http://localhost:3001 | Application web (TanStack Start) |
+| http://localhost:3001 | Web app (TanStack Start) |
 | http://localhost:3000/api/docs | Swagger UI |
 | http://localhost:3000/api/health | Health check |
 
-Mobile : ouvre `apps/mobile` dans Android Studio (config *androidApp*) ou `apps/mobile/iosApp/iosApp.xcodeproj` dans Xcode.
+Mobile: open `apps/mobile` in Android Studio (*androidApp* configuration) or `apps/mobile/iosApp/iosApp.xcodeproj` in Xcode.
 
-## Scripts racine
+## Root scripts
 
-| Script | Effet |
-|--------|-------|
-| `bun run dev` | Lance API + Web en parallèle |
-| `bun run build` | Build API + Web |
-| `bun run test` | Tests API (unit + e2e) + Web |
-| `bun run lint` | Lint API (oxlint) + Web (ESLint, tsc) |
-| `bun run mobile:android` | Build l'APK debug |
-| `bun run mobile:test` | Tests du module partagé KMP |
+| Script | Effect |
+|--------|--------|
+| `bun run dev` | Runs API + web in parallel |
+| `bun run build` | Builds API + web |
+| `bun run test` | API tests (unit + e2e) + web tests |
+| `bun run lint` | Lints API (oxlint) + web (ESLint, tsc) |
+| `bun run format` | Formats everything (Prettier + Spotless) |
+| `bun run mobile:android` | Builds the debug APK |
+| `bun run mobile:test` | Tests the shared KMP module |
 
 ## Structure
 
 ```
 ember/
 ├── apps/
-│   ├── api/       # NestJS : REST /api/v1, Drizzle
-│   ├── web/       # TanStack Start : SSR, consomme l'API
-│   └── mobile/    # KMP — shared (logique + UI Compose), androidApp, iosApp
+│   ├── api/       # NestJS: REST /api/v1, Drizzle
+│   ├── web/       # TanStack Start: SSR, consumes the API
+│   └── mobile/    # KMP: shared (logic + Compose UI), androidApp, iosApp
 ├── packages/
-│   └── contracts/ # types de l'API partagés par api et web (@ember/contracts)
-├── docs/          # Architecture, conventions, guides par app
-├── .github/       # CI, templates d'issues / PR
+│   └── contracts/ # API types shared by api and web (@ember/contracts)
+├── docs/          # Architecture, conventions, per-app guides
+├── .github/       # CI, issue / PR templates
 └── docker-compose.yml
 ```
 
 ## Documentation
 
-- [Getting started & renommage](docs/GETTING_STARTED.md)
-- [Architecture & contrat d'API](docs/ARCHITECTURE.md)
+- [Getting started & renaming](docs/GETTING_STARTED.md)
+- [Architecture & API contract](docs/ARCHITECTURE.md)
 - [Conventions](docs/CONVENTIONS.md)
-- Guides : [API](docs/API.md) · [Base de données](docs/DATABASE.md) · [Web](docs/WEB.md) · [Mobile](docs/MOBILE.md)
-- [Contribuer](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
+- Guides: [API](docs/API.md) · [Database](docs/DATABASE.md) · [Web](docs/WEB.md) · [Mobile](docs/MOBILE.md)
+- [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
-## Licence
+## License
 
-[MIT](LICENSE). La structure Gradle/Xcode du dossier mobile est dérivée de [Kotlin/KMP-App-Template](https://github.com/Kotlin/KMP-App-Template) (Apache 2.0).
+[MIT](LICENSE). The Gradle/Xcode structure of the mobile folder is derived from [Kotlin/KMP-App-Template](https://github.com/Kotlin/KMP-App-Template) (Apache 2.0).

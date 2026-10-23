@@ -1,9 +1,13 @@
 # Conventions
 
+## Language
+
+Everything in the repository is written in **English**: code, comments, documentation, commit messages, PR descriptions and UI strings.
+
 ## Git
 
-- Branche par défaut : `main`. Branches : `feat/…`, `fix/…`, `chore/…`, `docs/…`.
-- Commits : [Conventional Commits](https://www.conventionalcommits.org/) avec scope d'app.
+- Default branch: `main`. Branches: `feat/…`, `fix/…`, `chore/…`, `docs/…`.
+- Commits: [Conventional Commits](https://www.conventionalcommits.org/) with an app scope.
 
 ```
 feat(web): add items pagination
@@ -11,27 +15,28 @@ fix(api): return 404 on unknown item
 chore(mobile): bump ktor to 3.5.1
 ```
 
-## Nommage
+## Naming
 
-| Élément | API (NestJS) | Web (TanStack Start) | Mobile (KMP) |
+| Element | API (NestJS) | Web (TanStack Start) | Mobile (KMP) |
 |---------|--------------|----------------------|--------------|
-| Dossier de domaine | singulier : `modules/item/` | pluriel, comme l'URL : `routes/items/`, `components/items/` | `features/items/` |
-| Fichiers | `[name].[type].ts` : `item.service.ts`, `create-item.dto.ts` | `kebab-case.tsx` : `item-list.tsx`, `use-item-mutations.ts` | `PascalCase.kt` |
-| Classes / composants | `ItemService`, `CreateItemDto` | `ItemList`, `useItemMutations` | `ItemsViewModel` |
-| Tests | `*.spec.ts` à côté du code, e2e dans `test/*.e2e-spec.ts` | `*.test.ts(x)` à côté du code | `commonTest/` (même package) |
+| Domain folder | singular: `modules/item/` | plural, like the URL: `routes/items/`, `components/items/` | `features/items/` |
+| Files | `[name].[type].ts`: `item.service.ts`, `create-item.dto.ts` | `kebab-case.tsx`: `item-list.tsx`, `use-item-mutations.ts` | `PascalCase.kt` |
+| Classes / components | `ItemService`, `CreateItemDto` | `ItemList`, `useItemMutations` | `ItemsViewModel` |
+| Tests | `*.spec.ts` next to the code, e2e in `test/*.e2e-spec.ts` | `*.test.ts(x)` next to the code | `commonTest/` (same package) |
 
-Détails : [API.md](API.md#conventions-de-nommage), [WEB.md](WEB.md#règles-de-routage).
+Details: [API.md](API.md#naming-conventions), [WEB.md](WEB.md#routing-rules).
 
 ## Code
 
-- TypeScript `strict`. Pas de `any` sauf justification.
-- Web : composants fonctionnels React, données via `queryOptions` + loader de route, jamais de `fetch` direct dans un composant.
-- `routeTree.gen.ts` est généré : ne jamais l'éditer.
-- NestJS : un module par feature, DTO validés, aucune logique dans les controllers.
-- Kotlin : `StateFlow` immuable exposé par les ViewModels, repositories qui retournent `AppResult` au lieu de lever des exceptions.
-- Formatage : Prettier (API : point-virgules, web : sans) et ktlint via Spotless (Kotlin), appliqués par les hooks Git — voir [CONTRIBUTING](../CONTRIBUTING.md#formatage).
+- TypeScript `strict`. No `any` unless justified.
+- Types exchanged over HTTP live in `packages/contracts` and are imported with `import type` (see [ARCHITECTURE.md](ARCHITECTURE.md#shared-types-packagescontracts)).
+- Web: React function components, data through `queryOptions` + route loaders, never a direct `fetch` in a component.
+- `routeTree.gen.ts` is generated: never edit it.
+- NestJS: one module per feature, validated DTOs, no logic in controllers.
+- Kotlin: ViewModels expose an immutable `StateFlow`, repositories return `AppResult` instead of throwing.
+- Formatting: Prettier (API: semicolons, web: none) and ktlint through Spotless (Kotlin), applied by the Git hooks — see [CONTRIBUTING](../CONTRIBUTING.md#formatting).
 
 ## Tests
 
-- Chaque service, repository et utilitaire `lib/` a au moins un test unitaire.
-- Chaque endpoint public a un test e2e (`apps/api/test`).
+- Every service, repository and `lib/` utility has at least one unit test.
+- Every public endpoint has an e2e test (`apps/api/test`).

@@ -1,6 +1,6 @@
 # Ember Web
 
-TanStack Start (React, SSR). Voir [docs/WEB.md](../../docs/WEB.md).
+TanStack Start (React, SSR). See [docs/WEB.md](../../docs/WEB.md).
 
 ```bash
 bun install
