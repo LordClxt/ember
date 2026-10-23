@@ -7,19 +7,26 @@ import {
 
 describe('item contract', () => {
   it('trims the name and rejects blank or too long names', () => {
-    expect(createItemSchema.parse({ name: '  Ember  ' })).toEqual({ name: 'Ember' });
+    expect(createItemSchema.parse({ name: '  Ember  ' })).toEqual({
+      name: 'Ember',
+    });
     expect(createItemSchema.safeParse({ name: '   ' }).success).toBe(false);
     expect(
-      createItemSchema.safeParse({ name: 'x'.repeat(ITEM_NAME_MAX_LENGTH + 1) }).success,
+      createItemSchema.safeParse({ name: 'x'.repeat(ITEM_NAME_MAX_LENGTH + 1) })
+        .success,
     ).toBe(false);
   });
 
   it('rejects unknown fields', () => {
-    expect(createItemSchema.safeParse({ name: 'a', unknown: true }).success).toBe(false);
+    expect(
+      createItemSchema.safeParse({ name: 'a', unknown: true }).success,
+    ).toBe(false);
   });
 
   it('allows partial updates and clearing the description, not a null name', () => {
-    expect(updateItemSchema.parse({ description: null })).toEqual({ description: null });
+    expect(updateItemSchema.parse({ description: null })).toEqual({
+      description: null,
+    });
     expect(updateItemSchema.parse({})).toEqual({});
     expect(updateItemSchema.safeParse({ name: null }).success).toBe(false);
   });

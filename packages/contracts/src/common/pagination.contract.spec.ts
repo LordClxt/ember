@@ -6,14 +6,21 @@ describe('pagination contract', () => {
       page: PAGINATION.DEFAULT_PAGE,
       limit: PAGINATION.DEFAULT_LIMIT,
     });
-    expect(paginationQuerySchema.parse({ page: '2', limit: '5' })).toEqual({ page: 2, limit: 5 });
+    expect(paginationQuerySchema.parse({ page: '2', limit: '5' })).toEqual({
+      page: 2,
+      limit: 5,
+    });
   });
 
   it('rejects out-of-range values', () => {
     expect(paginationQuerySchema.safeParse({ page: '0' }).success).toBe(false);
     expect(
-      paginationQuerySchema.safeParse({ limit: String(PAGINATION.MAX_LIMIT + 1) }).success,
+      paginationQuerySchema.safeParse({
+        limit: String(PAGINATION.MAX_LIMIT + 1),
+      }).success,
     ).toBe(false);
-    expect(paginationQuerySchema.safeParse({ page: 'abc' }).success).toBe(false);
+    expect(paginationQuerySchema.safeParse({ page: 'abc' }).success).toBe(
+      false,
+    );
   });
 });
