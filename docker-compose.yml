@@ -24,7 +24,8 @@ services:
       DATABASE_URL: ${DATABASE_URL:-file:./data/ember.db}
       DB_AUTO_MIGRATE: 'true'
     volumes:
-      - api-data:/app/data
+      # SQLite file of the API image (WORKDIR /repo/apps/api, DATABASE_URL=file:./data/ember.db).
+      - api-data:/repo/apps/api/data
     healthcheck:
       test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/health']
       interval: 10s
