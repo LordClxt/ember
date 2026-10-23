@@ -5,20 +5,21 @@
   "description": "Ember — TanStack Start / NestJS / Kotlin Multiplatform boilerplate",
   "license": "MIT",
   "scripts": {
-    "install:all": "bun install --cwd apps/api --frozen-lockfile && bun install --cwd apps/web --frozen-lockfile",
-    "dev": "concurrently -n api,web -c yellow,cyan \"bun run --cwd apps/api start:dev\" \"bun run --cwd apps/web dev\"",
+    "install:all": "bun install --frozen-lockfile",
+    "dev": "concurrently -n contracts,api,web -c gray,yellow,cyan \"bun run --cwd packages/contracts dev\" \"bun run --cwd apps/api start:dev\" \"bun run --cwd apps/web dev\"",
     "dev:api": "bun run --cwd apps/api start:dev",
     "dev:web": "bun run --cwd apps/web dev",
-    "build": "bun run --cwd apps/api build && bun run --cwd apps/web build",
-    "test": "bun run --cwd apps/api test && bun run --cwd apps/api test:e2e && bun run --cwd apps/web test",
-    "lint": "bun run --cwd apps/api lint && bun run --cwd apps/web lint && bun run --cwd apps/web typecheck",
+    "build": "bun run --cwd packages/contracts build && bun run --cwd apps/api build && bun run --cwd apps/web build",
+    "test": "bun run --cwd packages/contracts test && bun run --cwd apps/api test && bun run --cwd apps/api test:e2e && bun run --cwd apps/web test",
+    "lint": "bun run --cwd packages/contracts typecheck && bun run --cwd apps/api lint && bun run --cwd apps/web lint && bun run --cwd apps/web typecheck",
     "mobile:android": "cd apps/mobile && ./gradlew :androidApp:assembleDebug",
     "mobile:test": "cd apps/mobile && ./gradlew :shared:testAndroidHostTest",
     "prepare": "husky",
     "format": "prettier --write . && bun run format:kotlin",
     "format:check": "prettier --check .",
     "format:kotlin": "cd apps/mobile && ./gradlew spotlessApply",
-    "format:kotlin:check": "cd apps/mobile && ./gradlew spotlessCheck"
+    "format:kotlin:check": "cd apps/mobile && ./gradlew spotlessCheck",
+    "postinstall": "bun run --cwd packages/contracts build"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
@@ -26,5 +27,10 @@
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10"
   },
-  "packageManager": "bun@1.4.4"
+  "packageManager": "bun@1.4.4",
+  "workspaces": [
+    "apps/api",
+    "apps/web",
+    "packages/*"
+  ]
 }

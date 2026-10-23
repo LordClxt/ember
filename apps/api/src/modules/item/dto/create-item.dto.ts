@@ -1,17 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import type { CreateItemInput } from '@ember/contracts';
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { createItemSchema } from '@ember/contracts';
+import { createZodDto } from '../../../common/utils/zod-dto.util.js';
 
-export class CreateItemDto implements CreateItemInput {
-  @ApiProperty({ example: 'My first item', maxLength: 120 })
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(120)
-  name: string;
-
-  @ApiPropertyOptional({ maxLength: 500 })
-  @IsString()
-  @IsOptional()
-  @MaxLength(500)
-  description?: string;
-}
+export class CreateItemDto extends createZodDto(createItemSchema) {}

@@ -2,8 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { asc, count, eq } from 'drizzle-orm';
 import { DATABASE } from '../../../core/database/database.constants.js';
 import type { DatabaseConnection } from '../../../core/database/database.types.js';
-import type { CreateItemDto } from '../dto/create-item.dto.js';
-import type { UpdateItemDto } from '../dto/update-item.dto.js';
+import type { CreateItemInput, UpdateItemInput } from '@ember/contracts';
 import type { Item } from '../entities/item.entity.js';
 import { uuidv7 } from '../../../common/utils/uuid.util.js';
 import type { ItemRepository } from './item.repository.js';
@@ -48,7 +47,7 @@ export class DrizzleItemRepository implements ItemRepository {
     return row ?? null;
   }
 
-  async create(input: CreateItemDto): Promise<Item> {
+  async create(input: CreateItemInput): Promise<Item> {
     const now = new Date();
     const item: Item = {
       id: uuidv7(),
@@ -61,7 +60,7 @@ export class DrizzleItemRepository implements ItemRepository {
     return item;
   }
 
-  async update(id: string, input: UpdateItemDto): Promise<Item | null> {
+  async update(id: string, input: UpdateItemInput): Promise<Item | null> {
     // Only keys sent by the client: `undefined` means "leave unchanged".
     const changes = Object.fromEntries(
       Object.entries(input).filter(([, value]) => value !== undefined),

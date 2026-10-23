@@ -18,9 +18,9 @@
     "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "types": ["vitest/globals", "node"],
-    "paths": {
-      "@ember/contracts": ["../../packages/contracts/src/index.d.ts"]
-    }
+    "types": [
+      "vitest/globals",
+      "node"
+    ]
   }
 }

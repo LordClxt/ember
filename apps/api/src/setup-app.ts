@@ -1,9 +1,6 @@
-import {
-  type INestApplication,
-  ValidationPipe,
-  VersioningType,
-} from '@nestjs/common';
+import { type INestApplication, VersioningType } from '@nestjs/common';
 import helmet from 'helmet';
+import { ZodValidationPipe } from './common/pipes/zod-validation.pipe.js';
 
 /**
  * Global HTTP setup shared by `main.ts` and e2e tests,
@@ -14,12 +11,7 @@ export function setupApp(app: INestApplication, corsOrigins: string[] = []) {
   app.enableCors({ origin: corsOrigins });
   app.setGlobalPrefix('api');
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
+  // Validates every DTO built from an `@ember/contracts` schema.
+  app.useGlobalPipes(new ZodValidationPipe());
   return app;
 }

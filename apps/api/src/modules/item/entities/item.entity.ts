@@ -1,4 +1,3 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import type { Item as ItemContract } from '@ember/contracts';
 import type { BaseEntity } from '../../../common/types/base-entity.type.js';
 import type {
@@ -6,21 +5,10 @@ import type {
   SerializedAs,
 } from '../../../common/types/serialized.type.js';
 
-export class Item implements BaseEntity {
-  @ApiProperty({ format: 'uuid' })
-  id: string;
-
-  @ApiProperty({ example: 'My first item' })
+/** Persisted item. Its JSON is the `Item` contract (dates become ISO strings). */
+export interface Item extends BaseEntity {
   name: string;
-
-  @ApiPropertyOptional({ nullable: true, type: String })
   description: string | null;
-
-  @ApiProperty()
-  createdAt: Date;
-
-  @ApiProperty()
-  updatedAt: Date;
 }
 
 /** Fails to compile if the JSON of `Item` drifts from the shared contract. */

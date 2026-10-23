@@ -1,7 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { Paginated } from '@ember/contracts';
-import type { CreateItemDto } from './dto/create-item.dto.js';
-import type { UpdateItemDto } from './dto/update-item.dto.js';
+import type {
+  CreateItemInput,
+  Paginated,
+  UpdateItemInput,
+} from '@ember/contracts';
 import type { Item } from './entities/item.entity.js';
 import {
   ITEM_REPOSITORY,
@@ -26,12 +28,12 @@ export class ItemService {
     return item;
   }
 
-  create(dto: CreateItemDto): Promise<Item> {
-    return this.repository.create(dto);
+  create(input: CreateItemInput): Promise<Item> {
+    return this.repository.create(input);
   }
 
-  async update(id: string, dto: UpdateItemDto): Promise<Item> {
-    const item = await this.repository.update(id, dto);
+  async update(id: string, input: UpdateItemInput): Promise<Item> {
+    const item = await this.repository.update(id, input);
     if (!item) throw new NotFoundException(`Item ${id} not found`);
     return item;
   }
