@@ -1,14 +1,13 @@
-import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
-import { App } from 'supertest/types.js';
+import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from '../src/app.module.js';
-import { setupApp } from '../src/setup-app.js';
+import { createHttpAdapter, setupApp } from '../src/setup-app.js';
 
 const UNKNOWN_ID = '00000000-0000-4000-8000-000000000000';
 
 describe('Ember API (e2e)', () => {
-  let app: INestApplication<App>;
+  let app: NestFastifyApplication;
   const http = () => request(app.getHttpServer());
   const createItem = (body: object = { name: 'Ember' }) =>
     http().post('/api/v1/items').send(body).expect(201);
@@ -18,8 +17,14 @@ describe('Ember API (e2e)', () => {
       imports: [AppModule],
     }).compile();
 
-    app = setupApp(moduleFixture.createNestApplication());
+    app = await setupApp(
+      moduleFixture.createNestApplication<NestFastifyApplication>(
+        createHttpAdapter(),
+      ),
+    );
     await app.init();
+    // Fastify registers routes asynchronously: wait before sending requests.
+    await app.getHttpAdapter().getInstance().ready();
   });
 
   afterEach(async () => {

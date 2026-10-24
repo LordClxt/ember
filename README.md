@@ -7,7 +7,7 @@ A sample **`items`** module (minimal CRUD) runs through all three apps to show t
 
 | App | Stack | Folder |
 |-----|-------|--------|
-| **API** | NestJS 12, Drizzle ORM (SQLite by default · Postgres · MySQL), Swagger, Vitest | [`apps/api`](apps/api) |
+| **API** | NestJS 12 on Fastify, Drizzle ORM (SQLite by default · Postgres · MySQL), Swagger, Vitest | [`apps/api`](apps/api) |
 | **Web** | TanStack Start (React 19, SSR), TanStack Router & Query, Tailwind 4, Vitest | [`apps/web`](apps/web) |
 | **Mobile** | Kotlin Multiplatform + Compose Multiplatform (Android & iOS), Ktor, Koin | [`apps/mobile`](apps/mobile) |
 

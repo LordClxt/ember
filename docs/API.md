@@ -38,7 +38,7 @@ apps/api/
 │   ├── events/                     # domain event publishers / listeners
 │   ├── commands/                   # CLI jobs, CRON
 │   ├── app.module.ts
-│   ├── setup-app.ts                # HTTP pipeline shared by main.ts and the e2e tests
+│   ├── setup-app.ts                # Fastify adapter + HTTP pipeline shared by main.ts and e2e
 │   └── main.ts
 └── test/
     ├── item.e2e-spec.ts
@@ -92,6 +92,17 @@ apps/api/
 - A CLI or CRON job? → `commands/`
 
 > Consistency over perfection: a structure agreed upfront avoids debates.
+
+## HTTP platform: Fastify
+
+The API runs on [Fastify](https://fastify.dev) (`@nestjs/platform-fastify`) instead of Express.
+
+- `setup-app.ts` exports `createHttpAdapter()` and `setupApp()`. Both `main.ts` and the e2e tests use them, so tests run the production pipeline.
+- Security headers come from `@fastify/helmet`. Its CSP allows the inline scripts and styles that Swagger UI (`/api/docs`) needs, and `@fastify/static` serves the Swagger UI assets.
+- The server listens on `0.0.0.0` (Fastify defaults to `127.0.0.1`, which is unreachable from outside a container).
+- In filters and interceptors, use the Fastify types: `FastifyRequest` and `FastifyReply` from `fastify`, with `reply.status(code).send(body)`. Never import from `express`.
+- Middleware: register Fastify plugins with `await app.register(plugin, options)` in `setupApp`. Express middleware such as `helmet` or `compression` has a `@fastify/*` equivalent.
+- In e2e tests, call `await app.getHttpAdapter().getInstance().ready()` after `app.init()` before sending requests.
 
 ## Commands
 

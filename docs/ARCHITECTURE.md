@@ -5,7 +5,7 @@
 ```
 ┌────────────────┐        ┌───────────────────────┐
 │  Web (TanStack │──HTTP──▶                       │
-│  Start, SSR)   │        │   API (NestJS)        │
+│  Start, SSR)   │        │   API (NestJS/Fastify)│
 └────────────────┘        │   /api/v1/*           │──▶ Repository ──▶ Drizzle
 ┌────────────────┐        │                       │     (SQLite · Postgres · MySQL)
 │ Mobile (KMP)   │──HTTP──▶   /api/health         │

@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import type { ApiErrorBody } from '@ember/contracts';
-import type { Request, Response } from 'express';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 /** Normalises every error into the same JSON shape for all clients. */
 @Catch()
@@ -16,8 +16,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    const response = ctx.getResponse<FastifyReply>();
+    const request = ctx.getRequest<FastifyRequest>();
 
     const status =
       exception instanceof HttpException
@@ -43,6 +43,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       path: request.url,
       timestamp: new Date().toISOString(),
     };
-    response.status(status).json(errorBody);
+    void response.status(status).send(errorBody);
   }
 }
